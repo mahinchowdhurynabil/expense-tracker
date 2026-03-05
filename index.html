@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+
+    <title>Expense Tracker</title>
+  </head>
+  <body>
+    <main class="main-container">
+      <nav class="side-nav">
+        <div class="logo">ET</div>
+        <div class="menu">
+          <div class="menu-button">
+            <i class="fa-solid fa-grip active"></i>
+            <p>Deshboard</p>
+          </div>
+
+          <div class="menu-button">
+            <i class="fa-solid fa-sack-dollar"></i>
+            <p>Finance</p>
+          </div>
+
+          <div class="menu-button">
+            <i class="fa-solid fa-wallet"></i>
+            <p>Wallet</p>
+          </div>
+
+          <div class="menu-button">
+            <i class="fa-solid fa-gear"></i>
+            <p>Settings</p>
+          </div>
+        </div>
+        <div class="log-out">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </div>
+      </nav>
+
+      <section class="menu-container">
+        <div class="day-state">
+          <h3>Good Morning</h3>
+          <p class="date">16th Sept, 2020</p>
+        </div>
+
+        <div class="menu-state">
+          <div class="search-option">
+            <input
+              type="text"
+              class="search"
+              placeholder="search budget, expenses, transactions"
+            />
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+
+          <div class="select-month">
+            <p>September</p>
+            <i class="fa-solid fa-angle-down"></i>
+          </div>
+
+          <div class="notification">
+            <i class="fa-solid fa-bell"></i>
+            <div class="circle yes"></div>
+          </div>
+
+          <div class="user-details">
+            <div class="user-photo">
+              <img src="./assets/img/user.png" alt="" />
+            </div>
+            <div class="user-info">
+              <div class="user-name">Lauren</div>
+              <div class="user-profession">IT Professional</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="deshboard body-container">
+        <div class="grid-container grid-1">
+          <h4>Finance Overview</h4>
+          <div class="finance-container">
+            <!-- <canvas></canvas> -->
+            <div class="balance">
+              <p>Income</p>
+              <p>Expense</p>
+            </div>
+          </div>
+        </div>
+        <div class="grid-container grid-2">
+          <div class="title-section">
+            <h4>Expense Overview</h4>
+            <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+        </div>
+        <div class="grid-container grid-3">
+          <div class="title-section">
+            <h4>Recent Transactions</h4>
+            <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+        </div>
+        <div class="grid-container grid-4">
+          <div class="title-section">
+            <h4>Budget Progress Tracker</h4>
+            <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+        </div>
+
+        <div class="grid-container grid-6">
+          <div class="title-section">
+            <h4>Saving Goals</h4>
+            <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

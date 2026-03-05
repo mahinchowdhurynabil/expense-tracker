@@ -1,0 +1,306 @@
+@layer global {
+  /* dm-sans-300 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "DM Sans";
+    font-style: normal;
+    font-weight: 300;
+    src: url("/assets/fonts/dm-sans-v16-latin-300.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+  /* dm-sans-500 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "DM Sans";
+    font-style: normal;
+    font-weight: 500;
+    src: url("/assets/fonts/dm-sans-v16-latin-500.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+  /* dm-sans-600 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "DM Sans";
+    font-style: normal;
+    font-weight: 600;
+    src: url("/assets/fonts/dm-sans-v16-latin-600.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+  /* dm-sans-600italic - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "DM Sans";
+    font-style: italic;
+    font-weight: 600;
+    src: url("/assets/fonts/dm-sans-v16-latin-600italic.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+  /* dm-sans-700 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "DM Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/assets/fonts/dm-sans-v16-latin-700.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+  /* bricolage-grotesque-700 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/assets/fonts/bricolage-grotesque-v8-latin-700.woff2")
+      format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+
+  :root {
+    --body-color: #f0f3f7;
+    --container--bg-color: #fff;
+
+    --primary-text-color: #454545;
+    --secondary-text-color: rgb(138, 138, 138);
+
+    --btn-color: #6d6c6c;
+    --btn-blue: #3076ff;
+  }
+}
+* {
+  margin: 0;
+}
+
+body {
+  font-family: "DM Sans", Arial, Arial, Helvetica, sans-serif;
+
+  background-color: var(--body-color);
+  box-sizing: border-box;
+}
+
+.main-container {
+  display: grid;
+  height: 100vh;
+  gap: 16px;
+  padding: 10px;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "side-nav menu-container"
+    "side-nav body-container";
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+@layer side-nav {
+  .side-nav {
+    background-color: var(--container--bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+    padding-block: 32px;
+    width: 100px;
+    flex-shrink: 0;
+    grid-area: side-nav;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  .menu-button {
+    cursor: pointer;
+    padding: 16px 12px;
+    color: var(--btn-color);
+  }
+
+  .menu-button > .fa-solid {
+    display: inline;
+    padding: 16px;
+    border-radius: 50%;
+    font-size: 20px;
+    transition: all 300ms ease-in-out;
+  }
+
+  .menu-button > .fa-solid:hover {
+    color: var(--btn-blue);
+    padding: 16px;
+    background-color: #dee8fd;
+    border-radius: 50%;
+  }
+  .active {
+    color: var(--btn-blue);
+    padding: 16px;
+    background-color: #dee8fd;
+    border-radius: 50%;
+  }
+}
+
+@layer menu-container {
+  .menu-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    justify-content: space-between;
+    grid-area: menu-container;
+    padding-inline: 16px;
+  }
+
+  .day-state {
+    padding-block: 16px;
+    color: var(--primary-text-color);
+    width: 10%;
+  }
+
+  .date {
+    color: var(--secondary-text-color);
+    padding-block-start: 4px;
+  }
+
+  .menu-state {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding-block: 16px;
+  }
+  .search-option {
+    position: relative;
+    color: var(--primary-text-color);
+    max-width: 420px;
+  }
+
+  .search {
+    padding: 10px 36px;
+    font-size: 16px;
+    min-width: 19rem;
+    border: none;
+    border-radius: 25px;
+  }
+
+  .search-option i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+  }
+
+  .select-month {
+    display: flex;
+    padding: 10px 24px;
+    border-radius: 25px;
+    background-color: var(--container--bg-color);
+    cursor: pointer;
+  }
+
+  .notification {
+    position: relative;
+    font-size: 24px;
+    cursor: pointer;
+    padding-inline-end: 16px;
+    border-inline-end: 1px solid var(--secondary-text-color);
+  }
+
+  .circle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 3px;
+    right: 19px;
+    background-color: mediumspringgreen;
+    border: 1.5px solid white;
+    visibility: hidden;
+  }
+
+  .circle.yes {
+    visibility: visible;
+  }
+
+  .user-details {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .user-photo {
+    width: 60px;
+    height: auto;
+  }
+  .user-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+  }
+
+  .user-name {
+    font-size: 18px;
+    font-weight: bold;
+    padding-block-end: 4px;
+  }
+
+  .user-profession {
+    color: var(--secondary-text-color);
+  }
+}
+
+@layer deshboard {
+  .grid-1 {
+    grid-area: grid-1;
+  }
+  .grid-2 {
+    grid-area: grid-2;
+  }
+  .grid-3 {
+    grid-area: grid-3;
+  }
+  .grid-4 {
+    grid-area: grid-4;
+  }
+  .grid-5 {
+    grid-area: grid-5;
+  }
+  .grid-6 {
+    grid-area: grid-6;
+  }
+  .body-container {
+    flex: 1;
+    display: grid;
+    gap: 16px;
+    padding: 16px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    width: 100%;
+    justify-content: space-between;
+    align-content: center;
+    box-sizing: border-box;
+    grid-area: body-container;
+    grid-template-areas:
+      "grid-1 grid-2 grid-3"
+      "grid-4 grid-4 grid-6";
+  }
+  .grid-container {
+    background-color: var(--container--bg-color);
+    border-radius: 20px;
+    padding: 16px;
+  }
+
+  .title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primary-text-color);
+  }
+  .icon {
+    background-color: var(--primary-text-color);
+    padding: 6px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .icon i {
+    color: var(--secondary-text-color);
+  }
+}
