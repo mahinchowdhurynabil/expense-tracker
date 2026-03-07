@@ -60,6 +60,7 @@ new Chart(ctxBar, {
 
   options: {
     responsive: true,
+    maintainAspectRatio: false,
 
     plugins: {
       legend: {
