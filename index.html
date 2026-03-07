@@ -7,9 +7,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     />
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
 
+    <script src="script.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css" />
     <title>Expense Tracker</title>
   </head>
   <body>
@@ -82,12 +83,33 @@
 
       <section class="deshboard body-container">
         <div class="grid-container grid-1">
-          <h4>Finance Overview</h4>
+          <div class="title-section"><h4>Finance Overview</h4></div>
+
           <div class="finance-container">
-            <!-- <canvas></canvas> -->
-            <div class="balance">
-              <p>Income</p>
-              <p>Expense</p>
+            <div class="chart-container">
+              <canvas id="myChart"></canvas>
+            </div>
+
+            <div class="balance-box">
+              <div class="balance">
+                <h4 class="balance-title">Total Balance</h4>
+                <div class="total-balance">$3841</div>
+              </div>
+
+              <div class="balance">
+                <h4 class="balance-title">Budget</h4>
+                <div class="budget-balance">$3841</div>
+              </div>
+
+              <div class="balance">
+                <h4 class="balance-title">Expense</h4>
+                <div class="expense-balance">$3841</div>
+              </div>
+
+              <div class="balance">
+                <h4 class="balance-title">Total Savings</h4>
+                <div class="savings-balance">$3841</div>
+              </div>
             </div>
           </div>
         </div>
@@ -96,13 +118,35 @@
             <h4>Expense Overview</h4>
             <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
           </div>
+
+          <div class="bar-chart">
+            <canvas id="myBarChart"></canvas>
+          </div>
         </div>
+
         <div class="grid-container grid-3">
           <div class="title-section">
             <h4>Recent Transactions</h4>
             <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
           </div>
+          <div class="transations">
+            <div class="transation">
+              <div class="transation-no">1.</div>
+
+              <div class="transation-icon">
+                <i class="fa-solid fa-clapperboard"></i>
+              </div>
+
+              <div class="transation-info">
+                <p class="transation-category">Entertainment</p>
+                <p class="transation-date">14th Sept</p>
+              </div>
+
+              <p class="transation-amount">$25</p>
+            </div>
+          </div>
         </div>
+
         <div class="grid-container grid-4">
           <div class="title-section">
             <h4>Budget Progress Tracker</h4>
