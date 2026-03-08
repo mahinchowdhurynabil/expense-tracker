@@ -1,72 +1,60 @@
-@layer global {
-  /* dm-sans-300 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: "DM Sans";
-    font-style: normal;
-    font-weight: 300;
-    src: url("/assets/fonts/dm-sans-v16-latin-300.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-
-  /* dm-sans-500 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: "DM Sans";
-    font-style: normal;
-    font-weight: 500;
-    src: url("/assets/fonts/dm-sans-v16-latin-500.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-
-  /* dm-sans-600 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: "DM Sans";
-    font-style: normal;
-    font-weight: 600;
-    src: url("/assets/fonts/dm-sans-v16-latin-600.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-
-  /* dm-sans-600italic - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: "DM Sans";
-    font-style: italic;
-    font-weight: 600;
-    src: url("/assets/fonts/dm-sans-v16-latin-600italic.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-
-  /* dm-sans-700 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: "DM Sans";
-    font-style: normal;
-    font-weight: 700;
-    src: url("/assets/fonts/dm-sans-v16-latin-700.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-
-  /* bricolage-grotesque-700 - latin */
-  @font-face {
-    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
-    font-family: "Bricolage Grotesque";
-    font-style: normal;
-    font-weight: 700;
-    src: url("/assets/fonts/bricolage-grotesque-v8-latin-700.woff2")
-      format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
-  }
-
-  :root {
-    --body-color: #f0f3f7;
-    --container--bg-color: #fff;
-
-    --primary-text-color: #454545;
-    --secondary-text-color: rgb(138, 138, 138);
-
-    --icon-bg-color: rgb(96%, 96%, 96%);
-
-    --btn-color: #6d6c6c;
-    --btn-blue: #3076ff;
-  }
+@font-face {
+  font-display: swap;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 300;
+  src: url("/assets/fonts/dm-sans-v16-latin-300.woff2") format("woff2");
 }
+@font-face {
+  font-display: swap;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/assets/fonts/dm-sans-v16-latin-500.woff2") format("woff2");
+}
+@font-face {
+  font-display: swap;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  src: url("/assets/fonts/dm-sans-v16-latin-600.woff2") format("woff2");
+}
+@font-face {
+  font-display: swap;
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 600;
+  src: url("/assets/fonts/dm-sans-v16-latin-600italic.woff2") format("woff2");
+}
+@font-face {
+  font-display: swap;
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/assets/fonts/dm-sans-v16-latin-700.woff2") format("woff2");
+}
+@font-face {
+  font-display: swap;
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/assets/fonts/bricolage-grotesque-v8-latin-700.woff2")
+    format("woff2");
+}
+
+:root {
+  --body-color: #f0f3f7;
+  --container--bg-color: #fff;
+
+  --primary-text-color: #454545;
+  --secondary-text-color: rgb(138, 138, 138);
+
+  --icon-bg-color: rgb(96%, 96%, 96%);
+
+  --btn-color: #6d6c6c;
+  --btn-blue: #3076ff;
+}
+
 * {
   margin: 0;
 }
@@ -276,8 +264,8 @@ body {
     display: grid;
     gap: 16px;
     padding: 16px;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    
     height: 82vh;
     grid-template-areas:
       "grid-1 grid-2 grid-3"

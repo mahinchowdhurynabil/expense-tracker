@@ -1,3 +1,37 @@
+const greating = document.querySelector(".greating");
+const dateEl = document.querySelector(".date");
+
+const userName = document.querySelector(".user-name");
+const userProfession = document.querySelector(".user-profession");
+const userPhoto = document.querySelector(".user-dp");
+
+dateEl.innerText = new Date().toLocaleString("en-US", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+
+let hour = new Date().getHours();
+
+if (hour < 12) {
+  greating.innerText = "Good Morning";
+} else if (hour >= 12 && hour < 16) {
+  greating.innerText = "Good Afternoon";
+} else if (hour >= 16 && hour < 20) {
+  greating.innerText = "Good Evening";
+} else {
+  greating.innerText = "Good Night";
+}
+
+let userState = {
+  name: "Lauren Gliteo",
+  profession: "Cyber Expert",
+  imgSrc: "./assets/img/user.png",
+};
+
+userName.innerText = userState.name;
+userProfession.innerText = userState.profession;
+userPhoto.src = userState.imgSrc;
 const ctx = document.getElementById("myChart");
 
 new Chart(ctx, {
