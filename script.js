@@ -3,7 +3,7 @@ const dateEl = document.querySelector(".date");
 
 const userName = document.querySelector(".user-name");
 const userProfession = document.querySelector(".user-profession");
-const userPhoto = document.querySelector(".user-dp");
+const userPhoto = document.querySelectorAll(".user-dp");
 
 dateEl.innerText = new Date().toLocaleString("en-US", {
   day: "numeric",
@@ -31,21 +31,33 @@ let userState = {
 
 userName.innerText = userState.name;
 userProfession.innerText = userState.profession;
-userPhoto.src = userState.imgSrc;
+
+userPhoto.forEach((photo) => {
+  photo.src = userState.imgSrc;
+});
+
+// =================== Dashboard charts ===================
+
+function getLegendPosition() {
+  return window.innerWidth < 1070 ? "bottom" : "right";
+}
+
+// -------- Doughnut Chart --------
+
 const ctx = document.getElementById("myChart");
 
-new Chart(ctx, {
+const chart = new Chart(ctx, {
   type: "doughnut",
   data: {
     labels: ["Salary", "Cash in hand", "Last Month Balance"],
     datasets: [
       {
-        label: "My First Dataset",
+        label: "Balance",
         data: [300, 50, 100],
         backgroundColor: [
           "rgb(255, 205, 86)",
           "rgb(255, 99, 132)",
-          "rgb(22%, 37%, 59%)",
+          "rgb(56, 95, 150)",
         ],
         borderRadius: 10,
         hoverOffset: 4,
@@ -59,7 +71,7 @@ new Chart(ctx, {
     cutout: "75%",
     plugins: {
       legend: {
-        position: "right", // 👈 moves labels to the right
+        position: getLegendPosition(),
         labels: {
           usePointStyle: true,
           pointStyle: "rectRounded",
@@ -71,9 +83,16 @@ new Chart(ctx, {
   },
 });
 
+window.addEventListener("resize", () => {
+  chart.options.plugins.legend.position = getLegendPosition();
+  chart.update();
+});
+
+// -------- Bar Chart --------
+
 const ctxBar = document.getElementById("myBarChart");
 
-new Chart(ctxBar, {
+const barChart = new Chart(ctxBar, {
   type: "bar",
   data: {
     labels: ["Jan", "Feb", "Mar", "Apr", "May"],

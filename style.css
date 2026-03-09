@@ -68,7 +68,6 @@ body {
 
 .main-container {
   display: grid;
-
   gap: 16px;
   padding: 10px;
   grid-template-columns: 100px 1fr;
@@ -78,6 +77,11 @@ body {
     "side-nav body-container";
   overflow: hidden;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @layer side-nav {
@@ -90,13 +94,19 @@ body {
     justify-content: space-between;
     padding-block: 32px;
     width: 100px;
-    flex-shrink: 0;
     grid-area: side-nav;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   .logo {
     font-size: 1.5rem;
     font-weight: bold;
+    @media (width<= 425px) {
+      display: none;
+    }
   }
   .menu-button {
     cursor: pointer;
@@ -124,6 +134,13 @@ body {
     background-color: #dee8fd;
     border-radius: 50%;
   }
+
+  @media (max-width: 768px) {
+    .menu {
+      display: flex;
+      flex-direction: row;
+    }
+  }
 }
 
 @layer menu-container {
@@ -135,12 +152,24 @@ body {
     justify-content: space-between;
     grid-area: menu-container;
     padding-inline: 16px;
+
+    @media (width <=1200px) {
+      align-items: baseline;
+      gap: 8px;
+    }
+    @media (max-width: 425px) {
+      padding: 0;
+      gap: 0;
+    }
   }
 
   .day-state {
     padding-block: 16px;
     color: var(--primary-text-color);
     min-width: 160px;
+    @media (max-width: 425px) {
+      font-size: 16px;
+    }
   }
 
   .date {
@@ -154,11 +183,18 @@ body {
     gap: 2rem;
     flex-wrap: wrap;
     padding-block: 16px;
+
+    @media (width <=1200px) {
+      gap: 1rem;
+    }
   }
   .search-option {
     position: relative;
     color: var(--primary-text-color);
     max-width: 420px;
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   .search {
@@ -183,6 +219,10 @@ body {
     border-radius: 25px;
     background-color: var(--container--bg-color);
     cursor: pointer;
+
+    @media (width <= 425px) {
+      font-size: 14px;
+    }
   }
 
   .notification {
@@ -191,6 +231,10 @@ body {
     cursor: pointer;
     padding-inline-end: 16px;
     border-inline-end: 1px solid var(--secondary-text-color);
+
+    @media (max-width: 768px) {
+      border: none;
+    }
   }
 
   .circle {
@@ -214,6 +258,10 @@ body {
     align-items: center;
     gap: 8px;
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   .user-photo {
@@ -238,6 +286,9 @@ body {
 }
 
 @layer deshboard {
+  .deshboard {
+    /* visibility: hidden; */
+  }
   .grid-1 {
     grid-area: grid-1;
   }
@@ -265,16 +316,39 @@ body {
     gap: 16px;
     padding: 16px;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    
-    height: 82vh;
+
     grid-template-areas:
       "grid-1 grid-2 grid-3"
       "grid-4 grid-4 grid-6";
+
+    @media (width< 1550px) {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-areas:
+        "grid-1 grid-2"
+        "grid-3 grid-6"
+        "grid-4 grid-4";
+    }
+    @media (width <= 768px) {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "grid-1"
+        "grid-2"
+        "grid-3"
+        "grid-4"
+        "grid-6";
+    }
+    @media (max-width: 425px) {
+      padding: 0px;
+    }
   }
   .grid-container {
     background-color: var(--container--bg-color);
     border-radius: 20px;
     padding: 16px;
+
+    @media (max-width: 425px) {
+      padding: 8px;
+    }
   }
 
   .title-section {
@@ -284,12 +358,20 @@ body {
     font-size: 18px;
     padding-block: 8px;
     color: var(--primary-text-color);
+
+    @media (max-width: 425px) {
+      font-size: 16px;
+      padding-inline: 8px;
+    }
   }
   .icon {
     background-color: var(--primary-text-color);
     padding: 6px;
     border-radius: 50%;
     cursor: pointer;
+    @media (width<= 768px) {
+      font-size: 14px;
+    }
   }
   .icon i {
     color: var(--secondary-text-color);
@@ -322,14 +404,21 @@ body {
   }
 
   .chart-container {
-    height: 300px;
-    width: auto;
+    width: 22rem;
+
+    @media (max-width: 1070px) {
+      width: 10rem;
+    }
   }
 
   .bar-chart {
     height: 300px;
     width: 400px;
     align-self: center;
+
+    @media (max-width: 425px) {
+      max-width: 300px;
+    }
   }
 
   .transation {
@@ -412,49 +501,92 @@ body {
     justify-content: space-between;
     padding-block: 8px;
   }
+
+  .progress-bar {
+    position: relative;
+    display: flex;
+    height: 20px;
+    width: 100%;
+    background: var(--icon-bg-color);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .grocery-spend {
+    height: 20px;
+    background: #000;
+    width: 36%;
+  }
+  .car {
+    height: 20px;
+    background-color: salmon;
+    width: 40%;
+  }
+
+  .bill {
+    height: 20px;
+    width: 21%;
+    background-color: #3076ff;
+  }
+
+  .drinks {
+    height: 20px;
+    width: 21%;
+    background-color: #3076ff;
+  }
+
+  .traveling {
+    height: 20px;
+    width: 46%;
+    background-color: pink;
+  }
+
+  .play {
+    height: 20px;
+    width: 9%;
+    background-color: black;
+  }
 }
 
-.progress-bar {
-  position: relative;
-  display: flex;
-  height: 20px;
-  width: 100%;
-  background: var(--icon-bg-color);
-  border-radius: 10px;
-  overflow: hidden;
-}
+@layer mobile-nav {
+  .mobile-nav {
+    display: none;
+  }
+  @media (width<=768px) {
+    .mobile-nav {
+      display: flex;
+      align-items: center;
+      background-color: var(--container--bg-color);
+      left: 0;
+      bottom: 0;
+      position: fixed;
+      width: 100%;
+      font-size: 14px;
+      height: 100px;
+      z-index: 100;
+      justify-content: space-between;
+      padding-inline: 17px;
+      box-sizing: border-box;
+      border-top: 1px solid var(--icon-bg-color);
+      box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.grocery-spend {
-  height: 20px;
-  background: #000;
-  width: 36%;
-}
-.car {
-  height: 20px;
-  background-color: salmon;
-  width: 40%;
-}
+    .menu-button {
+      text-align: center;
+      justify-items: center;
+    }
 
-.bill {
-  height: 20px;
-  width: 21%;
-  background-color: #3076ff;
-}
+    .menu-button i {
+      font-size: 16px;
+    }
 
-.drinks {
-  height: 20px;
-  width: 21%;
-  background-color: #3076ff;
-}
-
-.traveling {
-  height: 20px;
-  width: 46%;
-  background-color: pink;
-}
-
-.play {
-  height: 20px;
-  width: 9%;
-  background-color: black;
+    .user-photo {
+      width: 40px;
+    }
+  }
+  .mobile-nav {
+    @media (width<= 425px) {
+      padding: 0;
+    }
+  }
 }
