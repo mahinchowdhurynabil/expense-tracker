@@ -19,12 +19,12 @@
         <div class="logo">ET</div>
         <div class="menu">
           <div class="menu-button">
-            <i class="fa-solid fa-grip active"></i>
+            <i class="fa-solid fa-grip"></i>
             <p>Deshboard</p>
           </div>
 
           <div class="menu-button">
-            <i class="fa-solid fa-sack-dollar"></i>
+            <i class="fa-solid fa-sack-dollar active"></i>
             <p>Finance</p>
           </div>
 
@@ -111,7 +111,7 @@
         <div class="grid-container grid-1">
           <div class="title-section"><h4>Finance Overview</h4></div>
 
-          <div class="finance-container">
+          <div class="finance-card">
             <div class="chart-container">
               <canvas id="myChart"></canvas>
             </div>
@@ -156,16 +156,18 @@
             <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
           </div>
           <div class="transations">
-            <div class="transation">
-              <div class="transation-no">1.</div>
+            <div class="transation-card">
+              <div class="transation">
+                <div class="transation-no">1.</div>
 
-              <div class="transation-icon">
-                <img src="./assets/img/category (1).png" alt="" />
-              </div>
+                <div class="transation-icon">
+                  <img src="./assets/img/category (1).png" alt="" />
+                </div>
 
-              <div class="transation-info">
-                <p class="transation-category">Entertainment</p>
-                <p class="transation-date">14th Sept</p>
+                <div class="transation-info">
+                  <p class="transation-category">Entertainment</p>
+                  <p class="transation-date">14th Sept</p>
+                </div>
               </div>
 
               <p class="transation-amount">$25</p>
@@ -251,6 +253,40 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="finance-container">
+        <div class="title-section">
+          <h4>Finance</h4>
+          <button class="add-income-btn">+ Add Income</button>
+        </div>
+        <div class="finance-cards">
+          <div class="grid-container monthly-income">
+            <div class="transations">
+              <div class="transation-card">
+                <div class="transation">
+                  <div class="transation-no">1.</div>
+
+                  <div class="transation-icon">
+                    <img src="./assets/img/category (1).png" alt="" />
+                  </div>
+
+                  <div class="transation-info">
+                    <p class="transation-category">Entertainment</p>
+                    <p class="transation-date">14th Sept</p>
+                  </div>
+                </div>
+
+                <p class="transation-amount">$25</p>
+
+                <div class="icon">
+                  <i class="fa-solid fa-pencil"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="grid-container budget"></div>
         </div>
       </section>
     </main>

@@ -187,6 +187,9 @@ body {
     @media (width <=1200px) {
       gap: 1rem;
     }
+    @media (width <= 425px) {
+      gap: 8px;
+    }
   }
   .search-option {
     position: relative;
@@ -221,6 +224,7 @@ body {
     cursor: pointer;
 
     @media (width <= 425px) {
+      padding: 8px 10px;
       font-size: 14px;
     }
   }
@@ -234,6 +238,7 @@ body {
 
     @media (max-width: 768px) {
       border: none;
+      padding-inline-end: 0;
     }
   }
 
@@ -286,9 +291,6 @@ body {
 }
 
 @layer deshboard {
-  .deshboard {
-    /* visibility: hidden; */
-  }
   .grid-1 {
     grid-area: grid-1;
   }
@@ -365,25 +367,35 @@ body {
     }
   }
   .icon {
+    display: grid;
     background-color: var(--primary-text-color);
-    padding: 6px;
+    padding: 8px;
     border-radius: 50%;
     cursor: pointer;
-    @media (width<= 768px) {
-      font-size: 14px;
-    }
+    align-items: center;
+    text-align: center;
   }
   .icon i {
-    color: var(--secondary-text-color);
+    font-size: 12px;
+    color: var(--body-color);
   }
 
-  .finance-container {
+  .finance-card {
     display: flex;
     flex-direction: row;
-    gap: 16px;
     justify-content: space-between;
-    gap: 16px;
+    gap: 1rem;
     align-items: center;
+
+    @media (max-width: 768px) {
+      justify-content: center;
+      gap: 10rem;
+    }
+
+    @media (max-width: 768px) {
+      justify-content: space-between;
+      gap: 0;
+    }
   }
 
   .balance-box {
@@ -422,27 +434,32 @@ body {
   }
 
   .transation {
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+  }
+  .transation-card {
     display: flex;
     flex-direction: row;
     gap: 16px;
     align-items: center;
+    justify-content: space-between;
     padding-block: 8px;
     padding: 16px;
   }
 
   .transation-icon {
-    padding: 12px;
+    padding: 10px;
     background-color: var(--icon-bg-color);
     border-radius: 50%;
   }
 
   .transation-icon img {
     width: 24px;
+    height: auto;
   }
-  .transation-cost {
-    justify-self: flex-end;
-  }
+
   .transation-date {
     color: var(--secondary-text-color);
     font-size: 14px;
@@ -452,9 +469,6 @@ body {
     font-weight: bold;
     font-size: 18px;
     color: var(--primary-text-color);
-    right: 2rem;
-    float: right;
-    position: absolute;
   }
   .transation-category {
     color: var(--primary-text-color);
@@ -546,6 +560,10 @@ body {
     width: 9%;
     background-color: black;
   }
+
+  .deshboard {
+    display: none;
+  }
 }
 
 @layer mobile-nav {
@@ -581,12 +599,46 @@ body {
     }
 
     .user-photo {
-      width: 40px;
+      width: 32px;
     }
   }
   .mobile-nav {
     @media (width<= 425px) {
+      height: 80px;
       padding: 0;
     }
+
+    .menu-button i {
+      padding: 10px;
+    }
+    .active {
+      padding: 10px;
+    }
   }
+}
+
+@layer finance {
+  .finance-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+  .add-income-btn {
+    padding: 10px 20px;
+    background-color: var(--primary-text-color);
+    color: var(--icon-bg-color);
+    border: none;
+    border-radius: 50px;
+  }
+  .finance-cards {
+    display: grid;
+    grid-template-columns: 500px 1fr;
+
+    gap: 1rem;
+  }
+}
+
+.deshboard {
+  display: none;
 }
