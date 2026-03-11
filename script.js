@@ -129,3 +129,45 @@ const barChart = new Chart(ctxBar, {
     },
   },
 });
+
+// -------- budget Chart --------
+
+const budgetChart = document.querySelector(".budget-chart");
+
+const budgetDchart = new Chart(budgetChart, {
+  type: "doughnut",
+  data: {
+    labels: ["Expense", "Available"],
+    datasets: [
+      {
+        label: "Balance",
+        data: [300, 50],
+        backgroundColor: ["rgb(255, 99, 132)", "rgb(56, 95, 150)"],
+        borderRadius: 10,
+        hoverOffset: 4,
+      },
+    ],
+  },
+
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "75%",
+    plugins: {
+      legend: {
+        position: getLegendPosition(),
+        labels: {
+          usePointStyle: true,
+          pointStyle: "rectRounded",
+          boxWidth: 12,
+          padding: 20,
+        },
+      },
+    },
+  },
+});
+
+window.addEventListener("resize", () => {
+  chart.options.plugins.legend.position = getLegendPosition();
+  chart.update();
+});
