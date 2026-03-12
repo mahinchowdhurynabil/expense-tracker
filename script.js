@@ -90,46 +90,55 @@ window.addEventListener("resize", () => {
 
 // -------- Bar Chart --------
 
-const ctxBar = document.getElementById("myBarChart");
+const barCharts = document.querySelectorAll(".myBarChart");
 
-const barChart = new Chart(ctxBar, {
-  type: "bar",
-  data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+barCharts.forEach((canvas, index) => {
+  let labels;
+  let incomeData;
+  let expenseData;
 
-    datasets: [
-      {
-        label: "Income",
-        data: [500, 600, 550, 700, 650],
-        backgroundColor: "rgb(54, 162, 235)",
-      },
-      {
-        label: "Expense",
-        data: [300, 400, 350, 450, 420],
-        backgroundColor: "rgb(255, 99, 132)",
-      },
-    ],
-  },
+  // First chart → 5 months
+  if (index === 0) {
+    labels = ["Jan", "Feb", "Mar", "Apr", "May"];
+    incomeData = [500, 600, 550, 700, 650];
+    expenseData = [300, 400, 350, 450, 420];
+  }
 
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
+  // Second chart → 9 months
+  else {
+    labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"];
+    incomeData = [500, 600, 550, 700, 650, 720, 680, 750, 800];
+    expenseData = [300, 400, 350, 450, 420, 460, 430, 470, 500];
+  }
 
-    plugins: {
-      legend: {
-        position: "bottom",
+  new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Income",
+          data: incomeData,
+          backgroundColor: "rgb(54, 162, 235)",
+        },
+        {
+          label: "Expense",
+          data: expenseData,
+          backgroundColor: "rgb(255, 99, 132)",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+        },
       },
     },
-
-    scales: {
-      x: {
-        categoryPercentage: 0.6,
-        barPercentage: 0.5,
-      },
-    },
-  },
+  });
 });
-
 // -------- budget Chart --------
 
 const budgetChart = document.querySelector(".budget-chart");

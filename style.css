@@ -223,6 +223,8 @@ body {
     border-radius: 25px;
     background-color: var(--container--bg-color);
     cursor: pointer;
+    align-items: center;
+    gap: 4px;
 
     @media (width <= 425px) {
       padding: 8px 10px;
@@ -359,7 +361,7 @@ body {
     justify-content: space-between;
     align-items: center;
     font-size: 18px;
-    padding-block: 8px;
+    padding-block: 14px;
     color: var(--primary-text-color);
 
     @media (max-width: 425px) {
@@ -450,8 +452,7 @@ body {
     gap: 16px;
     align-items: center;
     justify-content: space-between;
-    padding-block: 8px;
-    padding: 16px;
+    padding-block: 10px;
   }
 
   .transation-icon {
@@ -483,7 +484,6 @@ body {
   .savings-cards {
     display: flex;
     flex-direction: column;
-
     gap: 16px;
   }
   .savings-card {
@@ -641,7 +641,7 @@ body {
       padding-bottom: 90px;
     }
   }
-  .add-income-btn {
+  .text-btn {
     padding: 10px 20px;
     background-color: var(--primary-text-color);
     color: var(--icon-bg-color);
@@ -672,7 +672,8 @@ body {
 
     @media (max-width: 1470px) {
       flex-direction: column;
-      gap: 8;
+      gap: 8px;
+      padding: 16px;
     }
   }
   .budget .chart-container {
@@ -718,6 +719,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 12px;
+    padding-block: 8px;
     color: var(--primary-text-color);
   }
 
@@ -741,6 +743,11 @@ body {
     justify-items: end;
   }
 
+  .saving-budget {
+    background-color: var(--container--bg-color);
+    border-radius: 15px;
+  }
+
   @media (min-width: 769px) {
     .monthly-income {
       grid-column-start: 1;
@@ -761,6 +768,71 @@ body {
       grid-column-end: 3;
     }
   }
+}
+
+@layer expense {
+  .expense-container {
+    padding: 16px;
+  }
+  .expense-data-select {
+    display: flex;
+    gap: 0;
+    border-radius: 50px;
+    overflow: hidden;
+    border: 1px solid var(--icon-bg-color);
+  }
+  .expense-data-btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    color: var(--primary-text-color);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background 300ms ease-in-out;
+  }
+
+  .expense-data-btn:hover {
+    color: var(--container--bg-color);
+    background-color: var(--primary-text-color);
+  }
+
+  .expense-data-select :nth-child(2) {
+    border-inline: 1px solid var(--icon-bg-color);
+  }
+
+  .activeData {
+    padding: 10px 20px;
+    background-color: var(--primary-text-color);
+    color: var(--container--bg-color);
+  }
+  .expense-cards {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .expense-chart {
+    height: 320px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+
+  .bar-container {
+    height: 300px;
+  }
+
+  .category-expense {
+    grid-column-start: 3;
+    grid-column-end: 3;
+  }
+  .recent-transaction {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}
+
+.finance-container {
+  display: none;
 }
 
 .deshboard {

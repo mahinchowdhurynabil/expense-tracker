@@ -30,7 +30,7 @@
 
           <div class="menu-button">
             <i class="fa-solid fa-wallet"></i>
-            <p>Wallet</p>
+            <p>Expense</p>
           </div>
 
           <div class="menu-button">
@@ -146,7 +146,7 @@
           </div>
 
           <div class="bar-chart">
-            <canvas id="myBarChart"></canvas>
+            <canvas class="myBarChart"></canvas>
           </div>
         </div>
 
@@ -259,7 +259,7 @@
       <section class="finance-container">
         <div class="title-section">
           <h4>Finance</h4>
-          <button class="add-income-btn">+ Add Income</button>
+          <button class="text-btn">+ Add Income</button>
         </div>
 
         <div class="finance-cards">
@@ -418,7 +418,11 @@
             </div>
           </div>
 
-          <div class="saving-budget">
+          <div class="grid-container saving-budget">
+            <div class="title-section">
+              <h4>Savings Budget</h4>
+              <div class="icon"><i class="fa-solid fa-plus"></i></div>
+            </div>
             <div class="transations">
               <div class="transation-card">
                 <div class="transation">
@@ -438,6 +442,134 @@
 
                 <div class="icon">
                   <i class="fa-solid fa-pencil"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="expense-container">
+        <div class="title-section">
+          <h4>Expense</h4>
+          <button class="text-btn">+ Add Expense</button>
+        </div>
+
+        <div class="expense-cards">
+          <div class="expense-chart grid-container">
+            <div class="title-section">
+              <h4>Expense Overview</h4>
+              <div class="expense-data-select">
+                <button class="expense-data-btn activeData">Monthly</button>
+                <button class="expense-data-btn">Quaterly</button>
+                <button class="expense-data-btn">Yearly</button>
+              </div>
+            </div>
+            <div class="bar-container">
+              <canvas class="myBarChart"></canvas>
+            </div>
+          </div>
+
+          <div class="category-expense grid-container">
+            <div class="title-section">
+              <h4>Category Expense</h4>
+              <button class="icon"><i class="fa-solid fa-plus"></i></button>
+            </div>
+
+            <div class="categoryBar">
+              <canvas class="category-expense-bar"></canvas>
+            </div>
+          </div>
+
+          <div class="recent-transaction">
+            <div class="categories">
+              <div class="category-item">
+                <div class="category-icon">
+                  <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+
+                <div class="category-details">
+                  <div class="category">Electric Bill</div>
+                  <div><span>$1200</span> / <span>$2000</span></div>
+                </div>
+
+                <div class="edit">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <div class="category-icon">
+                  <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+
+                <div class="category-details">
+                  <div class="category">Electric Bill</div>
+                  <div><span>$1200</span> / <span>$2000</span></div>
+                </div>
+
+                <div class="edit">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <div class="category-icon">
+                  <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+
+                <div class="category-details">
+                  <div class="category">Electric Bill</div>
+                  <div><span>$1200</span> / <span>$2000</span></div>
+                </div>
+
+                <div class="edit">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <div class="category-icon">
+                  <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+
+                <div class="category-details">
+                  <div class="category">Electric Bill</div>
+                  <div><span>$1200</span> / <span>$2000</span></div>
+                </div>
+
+                <div class="edit">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <div class="category-icon">
+                  <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+
+                <div class="category-details">
+                  <div class="category">Electric Bill</div>
+                  <div><span>$1200</span> / <span>$2000</span></div>
+                </div>
+
+                <div class="edit">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+              </div>
+
+              <div class="category-item">
+                <div class="category-icon">
+                  <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+
+                <div class="category-details">
+                  <div class="category">Electric Bill</div>
+                  <div><span>$1200</span> / <span>$2000</span></div>
+                </div>
+
+                <div class="edit">
+                  <i class="fa-solid fa-ellipsis-vertical"></i>
                 </div>
               </div>
             </div>
