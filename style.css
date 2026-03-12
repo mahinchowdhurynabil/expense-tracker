@@ -369,8 +369,13 @@ body {
       padding-inline: 8px;
     }
   }
+  .icon-box {
+    display: flex;
+    gap: 8px;
+  }
   .icon {
-    display: grid;
+    display: flex;
+    gap: 8px;
     background-color: var(--primary-text-color);
     padding: 8px;
     border-radius: 50%;
@@ -773,6 +778,12 @@ body {
 @layer expense {
   .expense-container {
     padding: 16px;
+
+    padding-bottom: 100px;
+    @media (min-width: 500px) {
+      padding: 0;
+      padding-bottom: 100px;
+    }
   }
   .expense-data-select {
     display: flex;
@@ -808,26 +819,41 @@ body {
   .expense-cards {
     display: grid;
     gap: 16px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .expense-chart {
-    height: 320px;
-    grid-column-start: 1;
-    grid-column-end: 3;
+    min-block-size: fit-content;
   }
 
   .bar-container {
     height: 300px;
   }
 
-  .category-expense {
-    grid-column-start: 3;
-    grid-column-end: 3;
-  }
-  .recent-transaction {
-    grid-column-start: 1;
-    grid-column-end: 3;
+  @media (min-width: 768px) {
+    .expense-cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .expense-chart {
+      height: 320px;
+      grid-column-start: 1;
+      grid-column-end: 3;
+      min-block-size: fit-content;
+    }
+
+    .category-expense {
+      grid-column-start: 3;
+      grid-column-end: 3;
+    }
+    .recent-transaction {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+
+    .savings-budget {
+      grid-column-start: 3;
+      grid-column-end: 4;
+    }
   }
 }
 
