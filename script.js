@@ -5,6 +5,17 @@ const userName = document.querySelector(".user-name");
 const userProfession = document.querySelector(".user-profession");
 const userPhoto = document.querySelectorAll(".user-dp");
 
+
+let userState;
+
+userState = {
+  firstname: "",
+  lastname: "",
+  profession: "",
+  startingBalance: "",
+  imgSrc: "",
+};
+
 dateEl.innerText = new Date().toLocaleString("en-US", {
   day: "numeric",
   month: "short",
@@ -23,11 +34,13 @@ if (hour < 12) {
   greating.innerText = "Good Night";
 }
 
-let userState = {
-  name: "Lauren Gliteo",
-  profession: "Cyber Expert",
-  imgSrc: "./assets/img/user.png",
-};
+// let userState = {
+//   name: "Lauren Gliteo",
+//   profession: "Cyber Expert",
+//   imgSrc: "./assets/img/user.png",
+// };
+
+console.log(userState);
 
 userName.innerText = userState.name;
 userProfession.innerText = userState.profession;
