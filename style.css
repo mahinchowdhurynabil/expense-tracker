@@ -60,6 +60,11 @@
   padding: 0;
 } */
 
+*,
+*::before,
+*::after {
+  margin: 0;
+}
 body {
   font-family: "DM Sans", Arial, Arial, Helvetica, sans-serif;
   background-color: var(--body-color);
@@ -182,6 +187,7 @@ body {
     cursor: pointer;
     padding: 16px 12px;
     color: var(--btn-color);
+    place-self: center;
   }
 
   .menu-button > .fa-solid {
@@ -921,10 +927,14 @@ body {
   display: none;
 }
 
+.deshboard {
+  display: grid;
+}
+
 .finance-container {
   display: none;
 }
 
-.deshboard {
+.expense-container {
   display: none;
 }

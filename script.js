@@ -3,18 +3,84 @@ const dateEl = document.querySelector(".date");
 
 const userName = document.querySelector(".user-name");
 const userProfession = document.querySelector(".user-profession");
-const userPhoto = document.querySelectorAll(".user-dp");
+const userPhoto = document.querySelector(".user-dp");
 
+const firstName = document.querySelector(".first-name");
+const lastName = document.querySelector(".last-name");
+const profession = document.querySelector(".profession");
+const startingBalance = document.querySelector(".balance");
+const inputPhoto = document.querySelector(".upload-photo");
+const signup = document.querySelector(".sign-up");
+const signIn = document.querySelector(".sign-in");
 
-let userState;
+const mainContainer = document.querySelector(".main-container");
 
-userState = {
+let userState = JSON.parse(localStorage.getItem("userData")) || {
   firstname: "",
   lastname: "",
   profession: "",
   startingBalance: "",
   imgSrc: "",
 };
+
+function render() {
+  if (
+    userState &&
+    userState.firstname &&
+    userState.lastname &&
+    userState.profession
+  ) {
+    console.log("All fields are filled");
+    mainContainer.style.display = "grid";
+    signup.style.display = "none"; //
+  } else {
+    console.log("Some fields are missing");
+  }
+}
+
+render();
+
+// ==================signUp section============
+
+function inputsHandler(e) {
+  const name = e.target.name;
+  console.log(name);
+
+  const value = e.target.value;
+  console.log(value);
+
+  userState[name] = value;
+}
+
+document.querySelectorAll("input").forEach((input) => {
+  input.addEventListener("input", inputsHandler);
+});
+
+inputPhoto.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function () {
+    userState.imgSrc = reader.result;
+  };
+
+  reader.readAsDataURL(file);
+});
+
+signIn.addEventListener("click", () => {
+  localStorage.setItem("userData", JSON.stringify(userState));
+
+  userState = JSON.parse(localStorage.getItem("userData"));
+  render();
+  console.log(userState);
+});
+
+// userState = JSON.parse(localStorage.getItem("userData"));
+// console.log(userState);
+
+userName.innerText = userState.firstname;
+userProfession.innerText = userState.profession;
+userPhoto.src = userState.imgSrc;
 
 dateEl.innerText = new Date().toLocaleString("en-US", {
   day: "numeric",
@@ -39,15 +105,6 @@ if (hour < 12) {
 //   profession: "Cyber Expert",
 //   imgSrc: "./assets/img/user.png",
 // };
-
-console.log(userState);
-
-userName.innerText = userState.name;
-userProfession.innerText = userState.profession;
-
-userPhoto.forEach((photo) => {
-  photo.src = userState.imgSrc;
-});
 
 // =================== Dashboard charts ===================
 
