@@ -85,7 +85,6 @@ body {
   display: grid;
   gap: 16px;
   padding: 10px;
-
   grid-template-columns: 100px 1fr;
   grid-template-rows: auto 1fr;
   grid-template-areas:
@@ -95,8 +94,10 @@ body {
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "menu-container"
+      "body-container";
   }
 }
 
@@ -168,9 +169,10 @@ body {
     text-align: center;
     justify-content: space-between;
     padding-block: 32px;
+    height: 100vh;
     width: 100px;
     grid-area: side-nav;
-
+    background-clip: border-box;
     @media (max-width: 768px) {
       display: none;
     }
@@ -415,6 +417,7 @@ body {
         "grid-3"
         "grid-4"
         "grid-6";
+      padding-block-end: 100px;
     }
     @media (max-width: 425px) {
       padding: 0px;
@@ -458,6 +461,7 @@ body {
     flex-direction: row;
     justify-content: space-between;
     gap: 1rem;
+    padding: 16px;
     align-items: center;
 
     @media (max-width: 768px) {
@@ -513,7 +517,12 @@ body {
     align-items: center;
 
     @media (max-width: 425px) {
-      gap: 8px;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .transation-no {
+      padding-block: 4px;
     }
   }
   .transation-card {
@@ -748,6 +757,7 @@ body {
   }
   .budget .chart-container {
     width: 20rem;
+    height: 350px;
 
     @media (max-width: 1470px) {
       width: 17rem;
@@ -842,11 +852,9 @@ body {
 
 @layer expense {
   .expense-container {
-    padding: 16px;
-
     padding-bottom: 100px;
+
     @media (min-width: 500px) {
-      padding: 0;
       padding-bottom: 100px;
     }
   }
@@ -922,9 +930,9 @@ body {
   }
 }
 
-.main-container {
+/* .main-container {
   display: none;
-}
+} */
 
 .dashboard {
   display: grid;
