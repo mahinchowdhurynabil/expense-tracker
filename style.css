@@ -190,7 +190,7 @@ body {
     place-self: center;
   }
 
-  .menu-button > .fa-solid {
+  .menu-button .fa-solid {
     display: inline;
     padding: 16px;
     border-radius: 50%;
@@ -198,17 +198,16 @@ body {
     transition: all 300ms ease-in-out;
   }
 
-  .menu-button > .fa-solid:hover {
+  /* hover effect */
+  .menu-button .fa-solid:hover {
     color: var(--btn-blue);
-    padding: 16px;
     background-color: #dee8fd;
-    border-radius: 50%;
   }
-  .active {
+
+  /* active icon only */
+  .menu-button .fa-solid.active {
     color: var(--btn-blue);
-    padding: 16px;
     background-color: #dee8fd;
-    border-radius: 50%;
   }
 
   @media (max-width: 768px) {
@@ -368,7 +367,7 @@ body {
   }
 }
 
-@layer deshboard {
+@layer dashboard {
   .grid-1 {
     grid-area: grid-1;
   }
@@ -637,7 +636,7 @@ body {
     background-color: black;
   }
 
-  .deshboard {
+  .dashboard {
     display: none;
 
     @media (max-width: 500px) {
@@ -927,7 +926,7 @@ body {
   display: none;
 }
 
-.deshboard {
+.dashboard {
   display: grid;
 }
 

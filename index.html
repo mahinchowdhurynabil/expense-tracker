@@ -9,6 +9,7 @@
     />
 
     <script src="script.js" defer></script>
+    <script src="./script/side-menu.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css" />
     <title>Expense Tracker</title>
@@ -62,27 +63,29 @@
     <main class="main-container">
       <nav class="side-nav">
         <div class="logo">ET</div>
+
         <div class="menu">
-          <div class="menu-button">
+          <div class="menu-button" data-page="dashboard">
             <i class="fa-solid fa-grip active"></i>
-            <p>Deshboard</p>
+            <p>Dashboard</p>
           </div>
 
-          <div class="menu-button">
+          <div class="menu-button" data-page="finance-container">
             <i class="fa-solid fa-sack-dollar"></i>
             <p>Finance</p>
           </div>
 
-          <div class="menu-button">
+          <div class="menu-button" data-page="expense-container">
             <i class="fa-solid fa-wallet"></i>
             <p>Expense</p>
           </div>
 
-          <div class="menu-button">
+          <div class="menu-button" data-page="settings">
             <i class="fa-solid fa-gear"></i>
             <p>Settings</p>
           </div>
         </div>
+
         <div class="log-out">
           <i class="fa-solid fa-right-from-bracket"></i>
         </div>
@@ -152,7 +155,7 @@
         </div>
       </section>
 
-      <section class="deshboard body-container">
+      <section class="dashboard body-container">
         <div class="grid-container grid-1">
           <div class="title-section"><h4>Finance Overview</h4></div>
 
