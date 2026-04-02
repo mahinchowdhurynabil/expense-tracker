@@ -307,7 +307,38 @@
       <section class="finance-container">
         <div class="title-section">
           <h4>Finance</h4>
-          <button class="text-btn">+ Add Income</button>
+
+          <div class="btn-content">
+            <button class="text-btn trx-btn">+ Add Income</button>
+
+            <div class="trx-btn-content">
+              <input
+                type="number"
+                class="trx-amount"
+                placeholder="transaction amount"
+              />
+
+              <select name="trx-category" id="">
+                <option value="Salary">Salary</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Gift">Gift</option>
+                <option value="Business">Business</option>
+              </select>
+
+              <input
+                type="text"
+                class="trx-name"
+                placeholder="transaction name"
+              />
+              <input
+                type="date"
+                class="trx-date"
+                placeholder="transaction date"
+              />
+
+              <button type="submit" class="text-btn add-income">Add</button>
+            </div>
+          </div>
         </div>
 
         <div class="finance-cards">

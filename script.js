@@ -3,7 +3,7 @@ const dateEl = document.querySelector(".date");
 
 const userName = document.querySelector(".user-name");
 const userProfession = document.querySelector(".user-profession");
-const userPhoto = document.querySelector(".user-dp");
+const userPhotos = document.querySelectorAll(".user-dp");
 
 const firstName = document.querySelector(".first-name");
 const lastName = document.querySelector(".last-name");
@@ -80,7 +80,10 @@ signIn.addEventListener("click", () => {
 
 userName.innerText = userState.firstname;
 userProfession.innerText = userState.profession;
-userPhoto.src = userState.imgSrc;
+
+userPhotos.forEach((userPhoto) => {
+  userPhoto.src = userState.imgSrc;
+});
 
 dateEl.innerText = new Date().toLocaleString("en-US", {
   day: "numeric",
@@ -250,3 +253,42 @@ window.addEventListener("resize", () => {
   chart.options.plugins.legend.position = getLegendPosition();
   chart.update();
 });
+
+// ==================Finance Section===============
+
+const addTrxBtn = document.querySelector(".trx-btn");
+const btnContent = document.querySelector(".trx-btn-content");
+
+addTrxBtn.addEventListener("click", () => {
+  btnContent.classList.toggle("active-btn");
+});
+
+const userTransactions = {
+  trxName: "",
+  trxAmount: "",
+  trxType: "",
+  trxcategory: "",
+  trxDate: "",
+};
+function addTransaction() {
+  document.querySelector(".trx-amount").addEventListener("input", (e) => {
+    const amount = e.target.value;
+
+    userTransactions.trxAmount = amount;
+  });
+
+  document.querySelector(".trx-name").addEventListener("input", (e) => {
+    const name = e.target.value;
+
+    userTransactions.trxName = name;
+  });
+
+  console.log(userTransactions.trxAmount);
+  console.log(userTransactions);
+}
+
+console.log(userTransactions);
+
+const addIncomebtn = document.querySelector(".add-income");
+
+addIncomebtn.addEventListener("click", addTransaction);
