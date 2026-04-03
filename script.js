@@ -23,6 +23,8 @@ let userState = JSON.parse(localStorage.getItem("userData")) || {
   imgSrc: "",
 };
 
+console.log(userState);
+
 function render() {
   if (
     userState &&
@@ -50,6 +52,8 @@ function inputsHandler(e) {
   console.log(value);
 
   userState[name] = value;
+
+  userState;
 }
 
 document.querySelectorAll("input").forEach((input) => {
@@ -75,9 +79,6 @@ signIn.addEventListener("click", () => {
   console.log(userState);
 });
 
-// userState = JSON.parse(localStorage.getItem("userData"));
-// console.log(userState);
-
 userName.innerText = userState.firstname;
 userProfession.innerText = userState.profession;
 
@@ -102,12 +103,6 @@ if (hour < 12) {
 } else {
   greating.innerText = "Good Night";
 }
-
-// let userState = {
-//   name: "Lauren Gliteo",
-//   profession: "Cyber Expert",
-//   imgSrc: "./assets/img/user.png",
-// };
 
 // =================== Dashboard charts ===================
 
@@ -259,32 +254,45 @@ window.addEventListener("resize", () => {
 const addTrxBtn = document.querySelector(".trx-btn");
 const btnContent = document.querySelector(".trx-btn-content");
 
-addTrxBtn.addEventListener("click", () => {
+addTrxBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
   btnContent.classList.toggle("active-btn");
 });
 
-const userTransactions = {
-  trxName: "",
-  trxAmount: "",
-  trxType: "",
-  trxcategory: "",
-  trxDate: "",
-};
+window.addEventListener("click", (e) => {
+  if (!btnContent.contains(e.target) && !addTrxBtn.contains(e.target)) {
+    btnContent.classList.remove("active-btn");
+  }
+});
+
+let userTransactions = [];
+
+userTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+const today = new Date();
+const formattedDate = today.toISOString().split("T")[0];
+
+document.querySelector(".trx-date").value = formattedDate;
+
 function addTransaction() {
-  document.querySelector(".trx-amount").addEventListener("input", (e) => {
-    const amount = e.target.value;
+  const newTransaction = {
+    id: Date.now(),
+    trxName: document.querySelector(".trx-name").value,
+    trxAmount: document.querySelector(".trx-amount").value,
+    trxType: "Income",
+    trxcategory: document.querySelector("option:checked").value,
+    trxDate: document.querySelector(".trx-date").value,
+  };
 
-    userTransactions.trxAmount = amount;
-  });
+  userTransactions.push(newTransaction);
 
-  document.querySelector(".trx-name").addEventListener("input", (e) => {
-    const name = e.target.value;
-
-    userTransactions.trxName = name;
-  });
-
-  console.log(userTransactions.trxAmount);
+  console.log(newTransaction);
   console.log(userTransactions);
+
+  userTransactions = localStorage.setItem(
+    "transactions",
+    JSON.stringify(userTransactions) || [],
+  );
 }
 
 console.log(userTransactions);

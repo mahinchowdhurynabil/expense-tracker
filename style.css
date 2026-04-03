@@ -749,24 +749,28 @@ button {
   }
 
   .trx-btn-content {
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 14px;
     position: absolute;
     top: 62px;
     right: 16px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
     /* background-color: rgba(255, 255, 255, 0.7); */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     padding: 16px;
     border-radius: 15px;
     transition: content 300ms ease-in-out;
-    display: none;
   }
 
   .active-btn {
     display: flex;
+  }
+
+  .active-btn > input {
+    border: 1px solid var(--container--bg-color);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   }
   .monthly-income-amount {
     padding: 6px 10px;
