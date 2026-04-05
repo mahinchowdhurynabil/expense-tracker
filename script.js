@@ -207,7 +207,140 @@ barCharts.forEach((canvas, index) => {
     },
   });
 });
-// -------- budget Chart --------
+
+window.addEventListener("resize", () => {
+  chart.options.plugins.legend.position = getLegendPosition();
+  chart.update();
+});
+
+// ==================Finance Section===============
+
+const addTrxBtn = document.querySelector(".add-trx-btn");
+const btnContent = document.querySelector(".trx-btn-content");
+const monthlyIncomeBalance = document.querySelector(".monthly-income-amount");
+
+addTrxBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  btnContent.classList.toggle("active-btn");
+});
+
+window.addEventListener("click", (e) => {
+  if (!e.target.closest(".trx-btn, .trx-btn-content")) {
+    btnContent.classList.remove("active-btn");
+  }
+});
+
+let userTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+const today = new Date();
+const formattedDate = today.toISOString().split("T")[0];
+
+document.querySelectorAll(".trx-date").forEach((dateInput) => {
+  dateInput.value = formattedDate;
+});
+
+function addTransaction() {
+  const nameInput = document.querySelector(".trx-name");
+  const amountInput = document.querySelector(".trx-amount");
+
+  const categoryInput = document.querySelector("option:checked");
+  const dateInput = document.querySelector(".trx-date");
+
+  const newTransaction = {
+    id: Date.now(),
+    trxName: nameInput.value.trim(),
+    trxAmount: Number(amountInput.value),
+    trxType: "Income",
+    trxCategory: categoryInput.value,
+    trxDate: dateInput.value,
+  };
+  userTransactions.push(newTransaction);
+
+  console.log(newTransaction);
+  console.log(userTransactions);
+
+  localStorage.setItem("transactions", JSON.stringify(userTransactions));
+
+  nameInput.value = "";
+  amountInput.value = "";
+  // categorySelect.value = "";
+  categoryInput.value = "Salary";
+  dateInput.value = formattedDate;
+
+  finaceRender();
+}
+
+const addIncomebtn = document.querySelector(".add-income");
+addIncomebtn.addEventListener("click", addTransaction);
+
+function monthlyTransaction() {
+  const income = userTransactions.filter((trx) => trx.trxType === "Income");
+  const totalIncome = income.reduce(
+    (acc, trx) => acc + Number(trx.trxAmount),
+    0,
+  );
+
+  monthlyIncomeBalance.innerText = `${totalIncome}`;
+
+  const transactionsContainer = document.querySelector(".finance-transactions");
+  transactionsContainer.innerHTML = "";
+
+  income.forEach((trx, index) => {
+    const transactionItem = document.createElement("div");
+    transactionItem.classList.add("transaction-card");
+
+    const transaction = document.createElement("div");
+    transaction.classList.add("transaction");
+
+    const trxSerial = document.createElement("p");
+    trxSerial.classList.add("transaction-no");
+    trxSerial.innerText = index + 1;
+
+    const trxIcon = document.createElement("div");
+    trxIcon.classList.add("transaction-icon");
+
+    const trxImg = document.createElement("img");
+    trxImg.src = `./assets/img/${trx.trxCategory.toLowerCase()}.png`;
+
+    trxIcon.appendChild(trxImg);
+
+    const trxInfo = document.createElement("div");
+    trxInfo.classList.add("transaction-info");
+
+    const trxCat = document.createElement("p");
+    trxCat.classList.add("transaction-category");
+    trxCat.innerText = trx.trxCategory;
+
+    const trxDate = document.createElement("p");
+    trxDate.classList.add("transaction-date");
+    trxDate.innerText = trx.trxDate;
+
+    trxInfo.append(trxCat, trxDate);
+
+    const trxAmount = document.createElement("p");
+    trxAmount.classList.add("transaction-amount");
+    trxAmount.innerText = trx.trxAmount;
+
+    const editBtn = document.createElement("div");
+    editBtn.classList.add("icon");
+    editBtn.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
+
+    transaction.append(trxSerial, trxIcon, trxInfo);
+
+    transactionItem.appendChild(transaction);
+    transactionItem.append(trxAmount, editBtn);
+    transactionsContainer.appendChild(transactionItem);
+  });
+}
+
+function finaceRender() {
+  monthlyTransaction();
+}
+
+finaceRender();
+console.log(userTransactions);
+
+// -------- Chart --------
 
 const budgetChart = document.querySelector(".budget-chart");
 
@@ -218,7 +351,7 @@ const budgetDchart = new Chart(budgetChart, {
     datasets: [
       {
         label: "Balance",
-        data: [300, 50],
+        data: [300, 560],
         backgroundColor: ["rgb(255, 99, 132)", "rgb(56, 95, 150)"],
         borderRadius: 10,
         hoverOffset: 4,
@@ -244,59 +377,73 @@ const budgetDchart = new Chart(budgetChart, {
   },
 });
 
-window.addEventListener("resize", () => {
-  chart.options.plugins.legend.position = getLegendPosition();
-  chart.update();
-});
+//--------budget-categories
 
-// ==================Finance Section===============
+const inputBudgetBtn = document.querySelector(".add-budget-btn");
+const budgetContent = document.querySelector(".budget-cat-content");
 
-const addTrxBtn = document.querySelector(".trx-btn");
-const btnContent = document.querySelector(".trx-btn-content");
-
-addTrxBtn.addEventListener("click", (e) => {
+inputBudgetBtn.addEventListener("click", (e) => {
   e.stopPropagation();
-  btnContent.classList.toggle("active-btn");
+  budgetContent.classList.toggle("active-btn");
+
+  console.log("ckl");
 });
 
 window.addEventListener("click", (e) => {
-  if (!btnContent.contains(e.target) && !addTrxBtn.contains(e.target)) {
-    btnContent.classList.remove("active-btn");
+  if (!e.target.closest(".add-budget-btn, .budget-cat-content")) {
+    budgetContent.classList.remove("active-btn");
   }
 });
 
-let userTransactions = [];
+function addBudget() {
+  const amount = document.querySelector(".budget-amount").value;
+  const category = document.querySelector(".budget-category").value;
 
-userTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
+  const categoriesContainer = document.querySelector(".categories");
 
-const today = new Date();
-const formattedDate = today.toISOString().split("T")[0];
+  const categoryItem = document.createElement("div");
+  categoryItem.classList.add("category-item");
+  categoriesContainer.appendChild(categoryItem);
 
-document.querySelector(".trx-date").value = formattedDate;
+  const catIconDiv = document.createElement("div");
+  catIconDiv.classList.add("category-icon");
+  const catIcon = document.createElement("img");
+  catIcon.src = `./assets/img/categories-icon/${category.toLowerCase()}.png`;
+  catIconDiv.appendChild(catIcon);
 
-function addTransaction() {
-  const newTransaction = {
-    id: Date.now(),
-    trxName: document.querySelector(".trx-name").value,
-    trxAmount: document.querySelector(".trx-amount").value,
-    trxType: "Income",
-    trxcategory: document.querySelector("option:checked").value,
-    trxDate: document.querySelector(".trx-date").value,
-  };
+  const catDetails = document.createElement("div");
+  catDetails.classList.add("category-details");
+  const categoryName = document.createElement("p");
+  categoryName.classList.add("category");
+  categoryName.innerText = category;
+  const catAmount = document.createElement("span");
+  catAmount.classList.add("budget-money");
+  catAmount.innerText = amount;
 
-  userTransactions.push(newTransaction);
+  catDetails.append(categoryName, catAmount);
 
-  console.log(newTransaction);
-  console.log(userTransactions);
+  categoryItem.append(catIconDiv, catDetails);
 
-  userTransactions = localStorage.setItem(
-    "transactions",
-    JSON.stringify(userTransactions) || [],
-  );
+  console.log(amount, category);
 }
 
-console.log(userTransactions);
+const addBudgetbtn = document.querySelector(".add-budget");
+addBudgetbtn.addEventListener("click", addBudget);
 
-const addIncomebtn = document.querySelector(".add-income");
+// ----------------------------expense Section-----------------------------
 
-addIncomebtn.addEventListener("click", addTransaction);
+const expTrxBtn = document.querySelector(".exp-trx-btn");
+const expBtnContent = document.querySelector(".exp-content");
+
+expTrxBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  expBtnContent.classList.toggle("active-btn");
+
+  console.log("click");
+});
+
+window.addEventListener("click", (e) => {
+  if (!e.target.closest(".exp-trx-btn, .exp-content")) {
+    expBtnContent.classList.remove("active-btn");
+  }
+});

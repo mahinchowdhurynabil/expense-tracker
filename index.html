@@ -203,22 +203,22 @@
             <h4>Recent Transactions</h4>
             <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
           </div>
-          <div class="transations">
-            <div class="transation-card">
-              <div class="transation">
-                <div class="transation-no">1.</div>
+          <div class="transactions">
+            <div class="transaction-card">
+              <div class="transaction">
+                <div class="transaction-no">1.</div>
 
-                <div class="transation-icon">
+                <div class="transaction-icon">
                   <img src="./assets/img/category (1).png" alt="" />
                 </div>
 
-                <div class="transation-info">
-                  <p class="transation-category">Entertainment</p>
-                  <p class="transation-date">14th Sept</p>
+                <div class="transaction-info">
+                  <p class="transaction-category">Entertainment</p>
+                  <p class="transaction-date">14th Sept</p>
                 </div>
               </div>
 
-              <p class="transation-amount">$25</p>
+              <p class="transaction-amount">$25</p>
             </div>
           </div>
         </div>
@@ -309,7 +309,7 @@
           <h4>Finance</h4>
 
           <div class="btn-content">
-            <button class="text-btn trx-btn">+ Add Income</button>
+            <button class="text-btn add-trx-btn">+ Add Income</button>
 
             <div class="trx-btn-content">
               <input
@@ -347,27 +347,27 @@
               <h4>Monthly Income</h4>
               <p class="monthly-income-amount">$1555</p>
             </div>
-            <div class="transations">
-              <div class="transation-card">
-                <div class="transation">
-                  <div class="transation-no">1.</div>
+            <div class="finance-transactions">
+              <!-- <div class="transaction-card">
+                <div class="transaction">
+                  <div class="transaction-no">1.</div>
 
-                  <div class="transation-icon">
+                  <div class="transaction-icon">
                     <img src="./assets/img/category (1).png" alt="" />
                   </div>
 
-                  <div class="transation-info">
-                    <p class="transation-category">Entertainment</p>
-                    <p class="transation-date">14th Sept</p>
+                  <div class="transaction-info">
+                    <p class="transaction-category">Entertainment</p>
+                    <p class="transaction-date">14th Sept</p>
                   </div>
                 </div>
 
-                <p class="transation-amount">$25</p>
+                <p class="transaction-amount">$25</p>
 
                 <div class="icon">
                   <i class="fa-solid fa-pencil"></i>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -401,13 +401,37 @@
           <div class="budget-categories">
             <div class="title-section">
               <h4>Budgeting Categories</h4>
-              <div class="icon"><i class="fa-solid fa-plus"></i></div>
+
+              <div class="icon add-budget-btn">
+                <i class="fa-solid fa-plus"></i>
+              </div>
             </div>
 
             <div class="categories">
+              <div class="trx-btn-content budget-cat-content">
+                <input
+                  type="number"
+                  class="budget-amount"
+                  placeholder="Budget Amount"
+                />
+                <select class="budget-category">
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Rent">Rent</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Health">Health</option>
+                  <option value="Education">Education</option>
+                  <option value="Others">Others</option>
+                </select>
+
+                <button class="add-budget text-btn">Add</button>
+              </div>
+
               <div class="category-item">
                 <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
+                  <img src="./assets/img/categories-icon/bill.png" alt="" />
                 </div>
 
                 <div class="category-details">
@@ -502,22 +526,22 @@
               <h4>Savings Budget</h4>
               <div class="icon"><i class="fa-solid fa-plus"></i></div>
             </div>
-            <div class="transations">
-              <div class="transation-card">
-                <div class="transation">
-                  <div class="transation-no">1.</div>
+            <div class="transactions">
+              <div class="transaction-card">
+                <div class="transaction">
+                  <div class="transaction-no">1.</div>
 
-                  <div class="transation-icon">
+                  <div class="transaction-icon">
                     <img src="./assets/img/category (1).png" alt="" />
                   </div>
 
-                  <div class="transation-info">
-                    <p class="transation-category">Entertainment</p>
-                    <p class="transation-date">14th Sept</p>
+                  <div class="transaction-info">
+                    <p class="transaction-category">Entertainment</p>
+                    <p class="transaction-date">14th Sept</p>
                   </div>
                 </div>
 
-                <p class="transation-amount">$25</p>
+                <p class="transaction-amount">$25</p>
 
                 <div class="icon">
                   <i class="fa-solid fa-pencil"></i>
@@ -531,7 +555,41 @@
       <section class="expense-container">
         <div class="title-section">
           <h4>Expense</h4>
-          <button class="text-btn">+ Add Expense</button>
+
+          <div class="btn-content">
+            <button class="text-btn exp-trx-btn">+ Add Expense</button>
+
+            <div class="trx-btn-content exp-content">
+              <input
+                type="number"
+                class="trx-amount"
+                placeholder="transaction amount"
+              />
+
+              <select class="trx-category">
+                <option value="food">Food</option>
+                <option value="transport">Transport</option>
+                <option value="bills">Bills</option>
+                <option value="shopping">Shopping</option>
+                <option value="health">Health</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="others">Others</option>
+              </select>
+
+              <input
+                type="text"
+                class="trx-name"
+                placeholder="transaction name"
+              />
+              <input
+                type="date"
+                class="trx-date"
+                placeholder="transaction date"
+              />
+
+              <button type="submit" class="text-btn add-expense">Add</button>
+            </div>
+          </div>
         </div>
 
         <div class="expense-cards">
@@ -673,19 +731,19 @@
                 <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
               </div>
             </div>
-            <div class="transations">
-              <div class="transation-card">
-                <div class="transation">
-                  <div class="transation-no">1.</div>
+            <div class="transactions">
+              <div class="transaction-card">
+                <div class="transaction">
+                  <div class="transaction-no">1.</div>
 
-                  <div class="transation-info">
-                    <p class="transation-category">Entertainment</p>
-                    <p class="transation-date">14th Sept</p>
+                  <div class="transaction-info">
+                    <p class="transaction-category">Entertainment</p>
+                    <p class="transaction-date">14th Sept</p>
                   </div>
                 </div>
 
                 <div style="display: flex; gap: 4px; align-items: center">
-                  <p class="transation-amount">$25</p>
+                  <p class="transaction-amount">$25</p>
 
                   <i class="fa-solid fa-ellipsis-vertical"></i>
                 </div>

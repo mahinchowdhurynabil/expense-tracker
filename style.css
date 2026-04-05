@@ -132,6 +132,10 @@ button {
     outline: 1px solid salmon;
   }
 
+  section {
+    padding-block-end: 120px;
+  }
+
   .dp p {
     margin-block-end: 8px;
   }
@@ -516,7 +520,7 @@ button {
     }
   }
 
-  .transation {
+  .transaction {
     display: flex;
     justify-content: space-between;
     gap: 16px;
@@ -527,11 +531,11 @@ button {
       align-items: flex-start;
     }
 
-    .transation-no {
+    .transaction-no {
       padding-block: 4px;
     }
   }
-  .transation-card {
+  .transaction-card {
     display: flex;
     flex-direction: row;
     gap: 16px;
@@ -540,28 +544,28 @@ button {
     padding-block: 10px;
   }
 
-  .transation-icon {
+  .transaction-icon {
     padding: 10px;
     background-color: var(--icon-bg-color);
     border-radius: 50%;
   }
 
-  .transation-icon img {
+  .transaction-icon img {
     width: 24px;
     height: auto;
   }
 
-  .transation-date {
+  .transaction-date {
     color: var(--secondary-text-color);
     font-size: 14px;
   }
 
-  .transation-amount {
+  .transaction-amount {
     font-weight: bold;
     font-size: 18px;
     color: var(--primary-text-color);
   }
-  .transation-category {
+  .transaction-category {
     color: var(--primary-text-color);
     padding-block: 4px;
     font-weight: bold;
@@ -764,13 +768,11 @@ button {
     transition: content 300ms ease-in-out;
   }
 
-  .active-btn {
-    display: flex;
-  }
-
-  .active-btn > input {
-    border: 1px solid var(--container--bg-color);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  .finance-transactions {
+    height: 94%;
+    scrollbar-width: thin;
+    overflow-y: scroll;
+    padding-inline: 12px;
   }
   .monthly-income-amount {
     padding: 6px 10px;
@@ -786,6 +788,17 @@ button {
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
     }
+  }
+
+  .categories > .trx-btn-content {
+    /* display: flex; */
+    top: 5px;
+    right: 0;
+    background-color: var(--container--bg-color);
+  }
+  .monthly-income {
+    height: 350px;
+    overflow: hidden;
   }
 
   .budget {
@@ -841,6 +854,7 @@ button {
 
   .categories {
     display: grid;
+    position: relative;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 12px;
     padding-block: 8px;
@@ -857,9 +871,18 @@ button {
   }
 
   .category-icon {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    align-content: center;
     padding: 8px;
     border: 3px solid red;
     border-radius: 50%;
+  }
+
+  .category-icon > img {
+    width: 24px;
+    height: auto;
   }
 
   .edit {
@@ -997,6 +1020,15 @@ button {
 /* .main-container {
   display: none;
 } */
+
+.active-btn {
+  display: flex;
+}
+
+.active-btn > input {
+  border: 1px solid var(--container--bg-color);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
 
 .sign-up {
   display: none;
