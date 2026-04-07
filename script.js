@@ -2,6 +2,7 @@ const greating = document.querySelector(".greating");
 const dateEl = document.querySelector(".date");
 
 const userName = document.querySelector(".user-name");
+const userLastName = document.querySelector(".user-last-name");
 const userProfession = document.querySelector(".user-profession");
 const userPhotos = document.querySelectorAll(".user-dp");
 
@@ -80,6 +81,7 @@ signIn.addEventListener("click", () => {
 });
 
 userName.innerText = userState.firstname;
+userLastName.innerText = userState.lastname;
 userProfession.innerText = userState.profession;
 
 userPhotos.forEach((userPhoto) => {
@@ -300,7 +302,7 @@ function monthlyTransaction() {
     trxIcon.classList.add("transaction-icon");
 
     const trxImg = document.createElement("img");
-    trxImg.src = `./assets/img/${trx.trxCategory.toLowerCase()}.png`;
+    trxImg.src = `./assets/img/categories-icon/${trx.trxCategory.toLowerCase()}.png`;
 
     trxIcon.appendChild(trxImg);
 
@@ -333,11 +335,6 @@ function monthlyTransaction() {
   });
 }
 
-function finaceRender() {
-  monthlyTransaction();
-}
-
-finaceRender();
 console.log(userTransactions);
 
 // -------- Chart --------
@@ -385,8 +382,6 @@ const budgetContent = document.querySelector(".budget-cat-content");
 inputBudgetBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   budgetContent.classList.toggle("active-btn");
-
-  console.log("ckl");
 });
 
 window.addEventListener("click", (e) => {
@@ -395,40 +390,183 @@ window.addEventListener("click", (e) => {
   }
 });
 
+const budgetTrx = JSON.parse(localStorage.getItem("budgetTransactions")) || [];
+
 function addBudget() {
-  const amount = document.querySelector(".budget-amount").value;
-  const category = document.querySelector(".budget-category").value;
+  const amountInput = document.querySelector(".budget-amount").value;
+  const categoryInput = document.querySelector(".budget-category").value;
 
-  const categoriesContainer = document.querySelector(".categories");
+  if (!amountInput || !categoryInput) {
+    alert("Please enter amount and category");
+    return;
+  }
 
-  const categoryItem = document.createElement("div");
-  categoryItem.classList.add("category-item");
-  categoriesContainer.appendChild(categoryItem);
+  const newBudgetTrx = {
+    id: Date.now(),
+    trxAmount: amountInput,
+    trxCategory: categoryInput,
+  };
 
-  const catIconDiv = document.createElement("div");
-  catIconDiv.classList.add("category-icon");
-  const catIcon = document.createElement("img");
-  catIcon.src = `./assets/img/categories-icon/${category.toLowerCase()}.png`;
-  catIconDiv.appendChild(catIcon);
+  budgetTrx.push(newBudgetTrx);
+  localStorage.setItem("budgetTransactions", JSON.stringify(budgetTrx));
 
-  const catDetails = document.createElement("div");
-  catDetails.classList.add("category-details");
-  const categoryName = document.createElement("p");
-  categoryName.classList.add("category");
-  categoryName.innerText = category;
-  const catAmount = document.createElement("span");
-  catAmount.classList.add("budget-money");
-  catAmount.innerText = amount;
+  // clear inputs
+  amountInput.value = "";
+  categoryInput.value = "";
 
-  catDetails.append(categoryName, catAmount);
-
-  categoryItem.append(catIconDiv, catDetails);
-
-  console.log(amount, category);
+  budgetRender();
+  console.log(budgetTrx);
 }
 
 const addBudgetbtn = document.querySelector(".add-budget");
 addBudgetbtn.addEventListener("click", addBudget);
+
+function budgetRender() {
+  const categoriesContainer = document.querySelector(".categories");
+
+  budgetTrx.forEach((budgetTrx) => {
+    const categoryItem = document.createElement("div");
+    categoryItem.classList.add("category-item");
+
+    const catIconDiv = document.createElement("div");
+    catIconDiv.classList.add("category-icon");
+
+    const catIcon = document.createElement("img");
+    catIcon.src = `./assets/img/categories-icon/${budgetTrx.trxCategory}.png`;
+    catIconDiv.appendChild(catIcon);
+
+    const catDetails = document.createElement("div");
+    catDetails.classList.add("category-details");
+
+    const categoryName = document.createElement("p");
+    categoryName.classList.add("category");
+    categoryName.innerText = budgetTrx.trxCategory;
+
+    const catAmount = document.createElement("span");
+    catAmount.classList.add("budget-money");
+    catAmount.innerText = `$${budgetTrx.trxAmount}`;
+
+    const editBtn = document.createElement("div");
+    editBtn.classList.add("edit");
+    editBtn.innerHTML = `<i class="fa-solid fa-ellipsis-vertical"></i>`;
+
+    catDetails.append(categoryName, catAmount);
+    categoryItem.append(catIconDiv, catDetails, editBtn);
+
+    categoriesContainer.appendChild(categoryItem);
+  });
+}
+
+//-----------saving Category
+const inputSavingBtn = document.querySelector(".add-saving-btn");
+const savingContainer = document.querySelector(".savings-cat-container");
+
+inputSavingBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  savingContainer.classList.toggle("active-btn");
+  console.log("ckl");
+});
+
+window.addEventListener("click", (e) => {
+  if (!e.target.closest(".add-saving-btn, .savings-cat-container")) {
+    savingContainer.classList.remove("active-btn");
+  }
+});
+
+const savingTrx = JSON.parse(localStorage.getItem("savingTransactions")) || [];
+const addSavingBtn = document.querySelector(".add-saving");
+function addSaving() {
+  const amountInput = document.querySelector(".saving-amount").value;
+  const categoryInput = document.querySelector(".saving-category").value;
+
+  if (!amountInput || !categoryInput) {
+    alert("Please enter amount and category");
+    return;
+  }
+
+  const newSavingTrx = {
+    id: Date.now(),
+    trxAmount: amountInput,
+    trxCategory: categoryInput,
+    trxDate: formattedDate,
+  };
+  savingTrx.push(newSavingTrx);
+  localStorage.setItem("savingTransactions", JSON.stringify(savingTrx));
+
+  amountInput.value = "";
+  categoryInput.value = "";
+  console.log(amountInput, categoryInput, savingTrx);
+
+  savingsRender();
+}
+
+addSavingBtn.addEventListener("click", addSaving);
+
+const savingTrxContainer = document.querySelectorAll(".saving-transactions");
+
+function savingsRender() {
+  savingTrxContainer.forEach((container, containerIndex) => {
+    container.innerHTML = "";
+
+    savingTrx.forEach((savingTrx, index) => {
+      const transactionItem = document.createElement("div");
+      transactionItem.classList.add("transaction-card");
+
+      const transaction = document.createElement("div");
+      transaction.classList.add("transaction");
+
+      const trxSerial = document.createElement("p");
+      trxSerial.classList.add("transaction-no");
+      trxSerial.innerText = index + 1;
+
+      const trxInfo = document.createElement("div");
+      trxInfo.classList.add("transaction-info");
+
+      const trxCat = document.createElement("p");
+      trxCat.classList.add("transaction-category");
+      trxCat.innerText = savingTrx.trxCategory;
+
+      const trxDate = document.createElement("p");
+      trxDate.classList.add("transaction-date");
+      trxDate.innerText = savingTrx.trxDate;
+
+      trxInfo.append(trxCat, trxDate);
+
+      const trxAmount = document.createElement("p");
+      trxAmount.classList.add("transaction-amount");
+      trxAmount.innerText = savingTrx.trxAmount;
+
+      const editBtn = document.createElement("div");
+      editBtn.classList.add("icon");
+      editBtn.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
+
+      transaction.appendChild(trxSerial);
+
+      if (containerIndex === 0) {
+        const trxIcon = document.createElement("div");
+        trxIcon.classList.add("transaction-icon");
+        const trxImg = document.createElement("img");
+        trxImg.src = `./assets/img/categories-icon/${savingTrx.trxCategory.toLowerCase()}.png`;
+
+        trxIcon.appendChild(trxImg);
+        transaction.appendChild(trxIcon);
+      }
+      transaction.appendChild(trxInfo);
+
+      transactionItem.appendChild(transaction);
+      transactionItem.append(trxAmount, editBtn);
+      container.appendChild(transactionItem);
+    });
+  });
+}
+
+function finaceRender() {
+  monthlyTransaction();
+  budgetRender();
+  savingsRender();
+}
+
+finaceRender();
 
 // ----------------------------expense Section-----------------------------
 
@@ -447,3 +585,84 @@ window.addEventListener("click", (e) => {
     expBtnContent.classList.remove("active-btn");
   }
 });
+
+document.querySelector(".exp-trx-date").value = formattedDate;
+
+function addExpenseTrx() {
+  const nameInput = document.querySelector(".exp-trx-name").value.trim();
+  const amountInput = document.querySelector(".exp-trx-amount").value;
+
+  const categoryInput = document.querySelector(".expense-category").value;
+  const dateInput = document.querySelector(".exp-trx-date").value;
+
+  const newTransaction = {
+    id: Date.now(),
+    trxName: nameInput,
+    trxAmount: Number(amountInput),
+    trxType: "Expense",
+    trxCategory: categoryInput,
+    trxDate: dateInput,
+  };
+  userTransactions.push(newTransaction);
+
+  console.log(newTransaction);
+  console.log(userTransactions);
+
+  localStorage.setItem("transactions", JSON.stringify(userTransactions));
+
+  nameInput.value = "";
+  amountInput.value = "";
+  categoryInput.value = "";
+  // categoryInput.value = "Salary";
+  dateInput.value = formattedDate;
+
+  expenseRender();
+}
+
+function expenseRender() {
+  const expense = userTransactions.filter((trx) => trx.trxType === "Expense");
+  const totalExpense = expense.reduce(
+    (acc, trx) => acc + Number(trx.trxAmount),
+    0,
+  );
+
+  const transactionsContainer = document.querySelector(".recent-expense");
+  transactionsContainer.innerHTML = "";
+
+  expense.forEach((trx) => {
+    const categoryItem = document.createElement("div");
+    categoryItem.classList.add("category-item");
+
+    const catIconDiv = document.createElement("div");
+    catIconDiv.classList.add("category-icon");
+
+    const catIcon = document.createElement("img");
+    catIcon.src = `./assets/img/categories-icon/${trx.trxCategory.toLowerCase()}.png`;
+    catIconDiv.appendChild(catIcon);
+
+    const catDetails = document.createElement("div");
+    catDetails.classList.add("category-details");
+
+    const categoryName = document.createElement("p");
+    categoryName.classList.add("category");
+    categoryName.innerText = trx.trxCategory;
+
+    const catAmount = document.createElement("span");
+    catAmount.classList.add("budget-money");
+    catAmount.innerText = `$${trx.trxAmount}`;
+
+    const editBtn = document.createElement("div");
+    editBtn.classList.add("edit");
+    editBtn.innerHTML = `<i class="fa-solid fa-ellipsis-vertical"></i>`;
+
+    catDetails.append(categoryName, catAmount);
+    categoryItem.append(catIconDiv, catDetails, editBtn);
+
+    transactionsContainer.appendChild(categoryItem);
+  });
+}
+
+expenseRender();
+
+const addExpense = document.querySelector(".add-expense");
+addExpense.addEventListener("click", addExpenseTrx);

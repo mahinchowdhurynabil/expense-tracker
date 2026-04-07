@@ -148,7 +148,8 @@
               <img src="" class="user-dp" alt="" />
             </div>
             <div class="user-info">
-              <div class="user-name">Lauren</div>
+              <p class="user-name"></p>
+              <p class="user-name user-last-name"></p>
               <div class="user-profession">IT Professional</div>
             </div>
           </div>
@@ -203,24 +204,7 @@
             <h4>Recent Transactions</h4>
             <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
           </div>
-          <div class="transactions">
-            <div class="transaction-card">
-              <div class="transaction">
-                <div class="transaction-no">1.</div>
-
-                <div class="transaction-icon">
-                  <img src="./assets/img/category (1).png" alt="" />
-                </div>
-
-                <div class="transaction-info">
-                  <p class="transaction-category">Entertainment</p>
-                  <p class="transaction-date">14th Sept</p>
-                </div>
-              </div>
-
-              <p class="transaction-amount">$25</p>
-            </div>
-          </div>
+          <div class="transactions"></div>
         </div>
 
         <div class="grid-container grid-4">
@@ -280,23 +264,12 @@
 
           <div class="savings-cards">
             <div class="savings-card">
-              <img src="./assets/img/travel-category.png" alt="" />
+              <img src="./assets/img/categories-icon/travel.png" alt="" />
               <div class="savings-goal">
                 <div class="savings-category">Travel</div>
                 <div class="balance">
                   <span class="savings-amount"> $1200</span> /
                   <span class="savings-target">$2000</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="savings-card">
-              <img src="./assets/img/health-category.png" alt="" />
-              <div class="savings-goal">
-                <div class="savings-category">Health</div>
-                <div class="balance">
-                  <span class="savings-amount"> $3100</span> /
-                  <span class="savings-target"> $3500</span>
                 </div>
               </div>
             </div>
@@ -402,111 +375,38 @@
             <div class="title-section">
               <h4>Budgeting Categories</h4>
 
-              <div class="icon add-budget-btn">
-                <i class="fa-solid fa-plus"></i>
+              <div class="btn-content">
+                <div class="icon add-budget-btn">
+                  <i class="fa-solid fa-plus"></i>
+                </div>
+
+                <div class="trx-btn-content budget-cat-content">
+                  <input
+                    type="number"
+                    class="budget-amount"
+                    placeholder="Budget Amount"
+                  />
+                  <select class="budget-category">
+                    <option value="Food">Food</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Bills">Bills</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Health">Health</option>
+                    <option value="Education">Education</option>
+                    <option value="Others">Others</option>
+                  </select>
+
+                  <button class="add-budget text-btn">Add</button>
+                </div>
               </div>
             </div>
 
             <div class="categories">
-              <div class="trx-btn-content budget-cat-content">
-                <input
-                  type="number"
-                  class="budget-amount"
-                  placeholder="Budget Amount"
-                />
-                <select class="budget-category">
-                  <option value="Food">Food</option>
-                  <option value="Transport">Transport</option>
-                  <option value="Bills">Bills</option>
-                  <option value="Rent">Rent</option>
-                  <option value="Shopping">Shopping</option>
-                  <option value="Entertainment">Entertainment</option>
-                  <option value="Health">Health</option>
-                  <option value="Education">Education</option>
-                  <option value="Others">Others</option>
-                </select>
-
-                <button class="add-budget text-btn">Add</button>
-              </div>
-
               <div class="category-item">
                 <div class="category-icon">
-                  <img src="./assets/img/categories-icon/bill.png" alt="" />
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
+                  <img src="./assets/img/categories-icon/bills.png" alt="" />
                 </div>
 
                 <div class="category-details">
@@ -521,18 +421,44 @@
             </div>
           </div>
 
-          <div class="grid-container saving-budget">
+          <div class="grid-container saving-container">
             <div class="title-section">
               <h4>Savings Budget</h4>
-              <div class="icon"><i class="fa-solid fa-plus"></i></div>
+
+              <div class="btn-content">
+                <div class="icon add-saving-btn">
+                  <i class="fa-solid fa-plus"></i>
+                </div>
+
+                <div class="trx-btn-content savings-cat-container">
+                  <input
+                    type="number"
+                    class="saving-amount"
+                    placeholder="Saving Amount"
+                  />
+                  <select class="saving-category">
+                    <option value="Emergency">🚨 Emergency</option>
+                    <option value="Investment">💰 Investment</option>
+                    <option value="Travel">✈️ Travel</option>
+                    <option value="Education">📚 Education</option>
+                    <option value="Gadgets">📱 Gadgets</option>
+                    <option value="Health">❤️ Health</option>
+                    <option value="Family">👨‍👩‍👧 Family</option>
+                    <option value="Lifestyle">🌿 Lifestyle</option>
+                    <option value="Others">✨ Others</option>
+                  </select>
+
+                  <button class="add-saving text-btn">Add</button>
+                </div>
+              </div>
             </div>
-            <div class="transactions">
+            <div class="transactions saving-transactions">
               <div class="transaction-card">
                 <div class="transaction">
                   <div class="transaction-no">1.</div>
 
                   <div class="transaction-icon">
-                    <img src="./assets/img/category (1).png" alt="" />
+                    <img src="./assets/img/categories-icon/bills.png" alt="" />
                   </div>
 
                   <div class="transaction-info">
@@ -562,11 +488,11 @@
             <div class="trx-btn-content exp-content">
               <input
                 type="number"
-                class="trx-amount"
+                class="exp-trx-amount"
                 placeholder="transaction amount"
               />
 
-              <select class="trx-category">
+              <select class="expense-category">
                 <option value="food">Food</option>
                 <option value="transport">Transport</option>
                 <option value="bills">Bills</option>
@@ -578,12 +504,12 @@
 
               <input
                 type="text"
-                class="trx-name"
+                class="exp-trx-name"
                 placeholder="transaction name"
               />
               <input
                 type="date"
-                class="trx-date"
+                class="exp-trx-date"
                 placeholder="transaction date"
               />
 
@@ -628,82 +554,7 @@
                 <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
               </div>
             </div>
-            <div class="categories">
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
-              <div class="category-item">
-                <div class="category-icon">
-                  <i class="fa-solid fa-bolt-lightning"></i>
-                </div>
-
-                <div class="category-details">
-                  <div class="category">Electric Bill</div>
-                  <div><span>$1200</span> / <span>$2000</span></div>
-                </div>
-
-                <div class="edit">
-                  <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
-              </div>
-
+            <div class="categories recent-expense">
               <div class="category-item">
                 <div class="category-icon">
                   <i class="fa-solid fa-bolt-lightning"></i>
@@ -731,7 +582,7 @@
                 <div class="icon"><i class="fa-solid fa-arrow-right"></i></div>
               </div>
             </div>
-            <div class="transactions">
+            <div class="transactions saving-transactions">
               <div class="transaction-card">
                 <div class="transaction">
                   <div class="transaction-no">1.</div>
