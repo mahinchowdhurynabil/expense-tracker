@@ -128,36 +128,43 @@ const months = [
 
 const displayName = document.querySelector(".display-month");
 
-function dropDown(selectedMonth) {
+let selectedMonth = new Date().getMonth();
+
+function dropDown() {
+  monthDropdown.innerHTML = "";
+
   months.forEach((month, index) => {
     const monthOption = document.createElement("p");
     monthOption.classList.add("month");
     monthOption.innerText = month;
-    monthOption.tabIndex = index;
+
+    if (index === selectedMonth) {
+      monthOption.classList.add("active-month");
+    }
+
+    monthOption.addEventListener("click", () => {
+      selectedMonth = index;
+
+      displayName.innerText = months[selectedMonth];
+
+      document
+        .querySelectorAll(".month")
+        .forEach((m) => m.classList.remove("active-month"));
+
+      monthOption.classList.add("active-month");
+      monthDropdown.classList.remove("active-btn");
+    });
+
     monthDropdown.appendChild(monthOption);
   });
-  const monthName = document.querySelectorAll(".month");
 
-  let selectedMonth = currentMonth;
-
+ 
   displayName.innerText = months[selectedMonth];
-  console.log(selectedMonth);
-
-  monthName[selectedMonth].classList.add("active-month");
-
-  selectMonths.addEventListener("click", () => {
-    monthDropdown.classList.toggle("active-btn");
-  });
 }
 
-monthName.forEach((month, index) => {
-  month.addEventListener("click", () => {
-    month.classList.remove("active-month");
-    selectedMonth = monthName[index];
-    monthName[index].classList.add("active-month");
-  });
 
-  dropDown();
+selectMonths.addEventListener("click", () => {
+  monthDropdown.classList.toggle("active-btn");
 });
 
 dropDown();

@@ -355,6 +355,8 @@ button {
     border-radius: 25px;
     background-color: var(--container--bg-color);
     cursor: pointer;
+    width: 100px;
+    justify-content: center;
     align-items: center;
     gap: 4px;
 
