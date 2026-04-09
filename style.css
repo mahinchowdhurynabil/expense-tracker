@@ -350,6 +350,7 @@ button {
 
   .select-month {
     display: flex;
+    position: relative;
     padding: 10px 24px;
     border-radius: 25px;
     background-color: var(--container--bg-color);
@@ -361,6 +362,26 @@ button {
       padding: 8px 10px;
       font-size: 14px;
     }
+  }
+
+  .month-dropdown {
+    display: none;
+    position: absolute;
+    top: 48px;
+    background-color: var(--container--bg-color);
+    width: auto;
+    left: 0;
+    height: 250px;
+    overflow: hidden;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    z-index: 120000;
+    transition: all 300ms ease-in-out;
+  }
+
+  .month-dropdown p {
+    padding: 8px 24px;
   }
 
   .notification {
@@ -416,6 +437,7 @@ button {
   }
 
   .user-name {
+    display: inline;
     font-size: 18px;
     font-weight: bold;
     padding-block-end: 4px;
@@ -656,7 +678,10 @@ button {
     color: var(--primary-text-color);
     font-weight: bold;
   }
-
+  .savings-budget {
+    height: 350px;
+    overflow: hidden;
+  }
   .saving-budget .bar-item {
     padding-block: 8px;
   }
@@ -923,7 +948,8 @@ button {
     overflow-y: scroll;
     scrollbar-width: thin;
     scroll-behavior: smooth;
-    height: 270px;
+    height: 83%;
+    padding-block: 0;
   }
   .saving-container .title-section {
     position: sticky;
@@ -947,7 +973,7 @@ button {
       grid-column-end: 3;
     }
 
-    .saving-budget {
+    .savings-budget {
       grid-column-start: 3;
       grid-column-end: 3;
     }
@@ -1060,6 +1086,12 @@ button {
 
 .active-btn {
   display: flex;
+  flex-direction: column;
+}
+
+.active-month {
+  background-color: var(--btn-color);
+  color: var(--container--bg-color);
 }
 
 .active-btn > input {
@@ -1072,11 +1104,11 @@ button {
 }
 
 .dashboard {
-  display: grid;
+  display: none;
 }
 
 .finance-container {
-  display: none;
+  display: grid;
 }
 
 .expense-container {

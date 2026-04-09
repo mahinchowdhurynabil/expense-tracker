@@ -14,6 +14,9 @@ const inputPhoto = document.querySelector(".upload-photo");
 const signup = document.querySelector(".sign-up");
 const signIn = document.querySelector(".sign-in");
 
+const selectMonths = document.querySelector(".select-month");
+const monthDropdown = document.querySelector(".month-dropdown");
+
 const mainContainer = document.querySelector(".main-container");
 
 let userState = JSON.parse(localStorage.getItem("userData")) || {
@@ -105,6 +108,59 @@ if (hour < 12) {
 } else {
   greating.innerText = "Good Night";
 }
+
+const currentMonth = new Date().getMonth();
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const displayName = document.querySelector(".display-month");
+
+function dropDown(selectedMonth) {
+  months.forEach((month, index) => {
+    const monthOption = document.createElement("p");
+    monthOption.classList.add("month");
+    monthOption.innerText = month;
+    monthOption.tabIndex = index;
+    monthDropdown.appendChild(monthOption);
+  });
+  const monthName = document.querySelectorAll(".month");
+
+  let selectedMonth = currentMonth;
+
+  displayName.innerText = months[selectedMonth];
+  console.log(selectedMonth);
+
+  monthName[selectedMonth].classList.add("active-month");
+
+  selectMonths.addEventListener("click", () => {
+    monthDropdown.classList.toggle("active-btn");
+  });
+}
+
+monthName.forEach((month, index) => {
+  month.addEventListener("click", () => {
+    month.classList.remove("active-month");
+    selectedMonth = monthName[index];
+    monthName[index].classList.add("active-month");
+  });
+
+  dropDown();
+});
+
+dropDown();
 
 // =================== Dashboard charts ===================
 
@@ -235,6 +291,9 @@ window.addEventListener("click", (e) => {
 let userTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
 const today = new Date();
+
+console.log(currentMonth);
+
 const formattedDate = today.toISOString().split("T")[0];
 
 document.querySelectorAll(".trx-date").forEach((dateInput) => {
@@ -265,7 +324,6 @@ function addTransaction() {
 
   nameInput.value = "";
   amountInput.value = "";
-  // categorySelect.value = "";
   categoryInput.value = "Salary";
   dateInput.value = formattedDate;
 
@@ -275,13 +333,10 @@ function addTransaction() {
 const addIncomebtn = document.querySelector(".add-income");
 addIncomebtn.addEventListener("click", addTransaction);
 
-function monthlyTransaction() {
-  const income = userTransactions.filter((trx) => trx.trxType === "Income");
-  const totalIncome = income.reduce(
-    (acc, trx) => acc + Number(trx.trxAmount),
-    0,
-  );
+const income = userTransactions.filter((trx) => trx.trxType === "Income");
+const totalIncome = income.reduce((acc, trx) => acc + Number(trx.trxAmount), 0);
 
+function monthlyTransaction() {
   monthlyIncomeBalance.innerText = `${totalIncome}`;
 
   const transactionsContainer = document.querySelector(".finance-transactions");
@@ -341,7 +396,7 @@ console.log(userTransactions);
 
 const budgetChart = document.querySelector(".budget-chart");
 
-const budgetDchart = new Chart(budgetChart, {
+const budgetchart = new Chart(budgetChart, {
   type: "doughnut",
   data: {
     labels: ["Expense", "Available"],
@@ -392,9 +447,14 @@ window.addEventListener("click", (e) => {
 
 const budgetTrx = JSON.parse(localStorage.getItem("budgetTransactions")) || [];
 
+const totalBudget = budgetTrx.reduce(
+  (acc, trx) => acc + Number(trx.trxAmount),
+  0,
+);
+
 function addBudget() {
-  const amountInput = document.querySelector(".budget-amount").value;
-  const categoryInput = document.querySelector(".budget-category").value;
+  let amountInput = document.querySelector(".budget-amount").value;
+  let categoryInput = document.querySelector(".budget-category").value;
 
   if (!amountInput || !categoryInput) {
     alert("Please enter amount and category");
@@ -411,10 +471,11 @@ function addBudget() {
   localStorage.setItem("budgetTransactions", JSON.stringify(budgetTrx));
 
   // clear inputs
-  amountInput.value = "";
-  categoryInput.value = "";
+  amountInput = "";
+  categoryInput = "";
 
   budgetRender();
+  budgetChartRender();
   console.log(budgetTrx);
 }
 
@@ -423,7 +484,7 @@ addBudgetbtn.addEventListener("click", addBudget);
 
 function budgetRender() {
   const categoriesContainer = document.querySelector(".categories");
-
+  categoriesContainer.innerHTML = "";
   budgetTrx.forEach((budgetTrx) => {
     const categoryItem = document.createElement("div");
     categoryItem.classList.add("category-item");
@@ -474,10 +535,15 @@ window.addEventListener("click", (e) => {
 });
 
 const savingTrx = JSON.parse(localStorage.getItem("savingTransactions")) || [];
+const totalSavings = savingTrx.reduce(
+  (acc, trx) => acc + Number(trx.trxAmount),
+  0,
+);
 const addSavingBtn = document.querySelector(".add-saving");
+
 function addSaving() {
-  const amountInput = document.querySelector(".saving-amount").value;
-  const categoryInput = document.querySelector(".saving-category").value;
+  let amountInput = document.querySelector(".saving-amount").value;
+  let categoryInput = document.querySelector(".saving-category").value;
 
   if (!amountInput || !categoryInput) {
     alert("Please enter amount and category");
@@ -493,11 +559,11 @@ function addSaving() {
   savingTrx.push(newSavingTrx);
   localStorage.setItem("savingTransactions", JSON.stringify(savingTrx));
 
-  amountInput.value = "";
-  categoryInput.value = "";
+  amountInput = "";
+  categoryInput = "";
   console.log(amountInput, categoryInput, savingTrx);
 
-  savingsRender();
+  finaceRender();
 }
 
 addSavingBtn.addEventListener("click", addSaving);
@@ -563,10 +629,9 @@ function savingsRender() {
 function finaceRender() {
   monthlyTransaction();
   budgetRender();
+  budgetChartRender();
   savingsRender();
 }
-
-finaceRender();
 
 // ----------------------------expense Section-----------------------------
 
@@ -618,14 +683,13 @@ function addExpenseTrx() {
 
   expenseRender();
 }
+const expense = userTransactions.filter((trx) => trx.trxType === "Expense");
+const totalExpense = expense.reduce(
+  (acc, trx) => acc + Number(trx.trxAmount),
+  0,
+);
 
 function expenseRender() {
-  const expense = userTransactions.filter((trx) => trx.trxType === "Expense");
-  const totalExpense = expense.reduce(
-    (acc, trx) => acc + Number(trx.trxAmount),
-    0,
-  );
-
   const transactionsContainer = document.querySelector(".recent-expense");
   transactionsContainer.innerHTML = "";
 
@@ -666,3 +730,56 @@ expenseRender();
 
 const addExpense = document.querySelector(".add-expense");
 addExpense.addEventListener("click", addExpenseTrx);
+
+const totalBalance = totalIncome - totalExpense - totalSavings;
+
+console.log(totalBalance);
+
+console.log(budgetchart.data.datasets[0].data);
+
+// JSON.parse(totalBalance.push(budgetchart.data.datasets[0].data[0]));
+budgetchart.data.datasets[0].data[0] = [totalExpense];
+budgetchart.data.datasets[0].data[1] = [totalBalance];
+console.log(totalBalance);
+console.log(totalExpense);
+console.log(totalIncome);
+console.log(totalBudget);
+
+const monthlyBudgetBalanceCon = document.querySelector(
+  ".monthly-budget-balance",
+);
+const availableBalanceCon = document.querySelector(".available-balance");
+const totalExpenseCon = document.querySelector(".expense-balance");
+const savingsbalanceCon = document.querySelector(".savings-balance");
+
+function budgetChartRender() {
+  monthlyBudgetBalanceCon.innerText = totalBudget;
+  availableBalanceCon.innerText = totalBalance;
+  totalExpenseCon.innerText = totalExpense;
+  savingsbalanceCon.innerText = totalSavings;
+
+  budgetchart.update();
+}
+
+finaceRender();
+// monthlyBudgetBalanceCon.innerText = "0";
+// availableBalanceCon.innerText = "0";
+// totalExpenseCon.innerText = "0";
+// savingsbalanceCon.innerText = "0";
+
+// function chartData() {
+//   if (
+//     income === 0 ||
+//     totalBalance === 0 ||
+//     totalExpense === 0 ||
+//     totalSavings === 0
+//   ) {
+//     monthlyBudgetBalanceCon.innerText = "0";
+//     availableBalanceCon.innerText = "0";
+//     totalExpenseCon.innerText = "0";
+//     savingsbalanceCon.innerText = "0";
+//   } else {
+
+//   }
+// }
+// chartData();
