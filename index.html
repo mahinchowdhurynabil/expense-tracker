@@ -7,7 +7,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     />
-
+    <!-- <script src="./script/sign-up.js"></script> -->
     <script src="script.js" defer></script>
     <script src="./script/side-menu.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -41,13 +41,35 @@
           placeholder="Enter your profession"
           required
         />
-        <input
-          type="text"
-          class="balance"
-          name="startingBalance"
-          placeholder="Enter your starting balance"
-          required
-        />
+        <div class="balance-container">
+          <input
+            type="text"
+            class="balance"
+            name="startingBalance"
+            placeholder="Starting balance"
+            required
+          />
+
+          <input
+            list="currencies"
+            id="currency"
+            name="currency"
+            placeholder="Choose a currency:"
+          />
+
+          <datalist id="currencies">
+            <option value="US Dollar ($)"></option>
+            <option value="Euro (€)"></option>
+            <option value="British Pound (£)"></option>
+            <option value="Japanese Yen (¥)"></option>
+            <option value="Chinese Yuan (¥ / 元)"></option>
+            <option value="Indian Rupee (₹)"></option>
+            <option value="Swiss Franc (Fr / CHF)"></option>
+            <option value="Canadian Dollar ($)"></option>
+            <option value="Australian Dollar ($)"></option>
+            <option value="Bangladeshi Taka (৳)"></option>
+          </datalist>
+        </div>
 
         <div class="dp">
           <p>Upload your profile picture</p>
@@ -109,7 +131,7 @@
           <p>Expense</p>
         </div>
 
-        <div class="menu-button">
+        <div class="menu-button" data-page="settings">
           <div class="user-photo">
             <img src="" class="user-dp" alt="" />
           </div>
@@ -159,7 +181,7 @@
 
       <!-- ----------------dashboard section------------ -->
 
-      <section class="dashboard body-container">
+      <section class="dashboard body-container active">
         <div class="grid-container grid-1">
           <div class="title-section"><h4>Finance Overview</h4></div>
 
@@ -296,7 +318,7 @@
                 placeholder="transaction amount"
               />
 
-              <select name="trx-category" id="">
+              <select class="income-trx-category" id="">
                 <option value="Salary">Salary</option>
                 <option value="Freelance">Freelance</option>
                 <option value="Gift">Gift</option>
@@ -323,7 +345,7 @@
           <div class="grid-container monthly-income">
             <div class="title-section">
               <h4>Monthly Income</h4>
-              <p class="monthly-income-amount">$1555</p>
+              <p class="monthly-income-amount">$0</p>
             </div>
             <div class="finance-transactions">
               <!-- <div class="transaction-card">
@@ -606,6 +628,12 @@
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="settings">
+        <div class="title-section">
+          <h4>Settings</h4>
         </div>
       </section>
     </main>

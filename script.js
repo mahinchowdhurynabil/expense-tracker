@@ -24,6 +24,7 @@ let userState = JSON.parse(localStorage.getItem("userData")) || {
   lastname: "",
   profession: "",
   startingBalance: "",
+  currency: "",
   imgSrc: "",
 };
 
@@ -34,26 +35,32 @@ function render() {
     userState &&
     userState.firstname &&
     userState.lastname &&
-    userState.profession
+    userState.profession &&
+    userState.currency
   ) {
     console.log("All fields are filled");
     mainContainer.style.display = "grid";
     signup.style.display = "none"; //
+    dashboardRender();
+
+    userName.innerText = userState.firstname;
+    userLastName.innerText = userState.lastname;
+    userProfession.innerText = userState.profession;
+
+    userPhotos.forEach((userPhoto) => {
+      userPhoto.src = userState.imgSrc;
+    });
   } else {
     console.log("Some fields are missing");
   }
 }
 
-render();
-
 // ==================signUp section============
 
 function inputsHandler(e) {
   const name = e.target.name;
-  console.log(name);
 
   const value = e.target.value;
-  console.log(value);
 
   userState[name] = value;
 
@@ -80,15 +87,6 @@ signIn.addEventListener("click", () => {
 
   userState = JSON.parse(localStorage.getItem("userData"));
   render();
-  console.log(userState);
-});
-
-userName.innerText = userState.firstname;
-userLastName.innerText = userState.lastname;
-userProfession.innerText = userState.profession;
-
-userPhotos.forEach((userPhoto) => {
-  userPhoto.src = userState.imgSrc;
 });
 
 dateEl.innerText = new Date().toLocaleString("en-US", {
@@ -128,7 +126,7 @@ const months = [
 
 const displayName = document.querySelector(".display-month");
 
-let selectedMonth = new Date().getMonth();
+let selectedMonth = currentMonth;
 
 function dropDown() {
   monthDropdown.innerHTML = "";
@@ -144,6 +142,7 @@ function dropDown() {
 
     monthOption.addEventListener("click", () => {
       selectedMonth = index;
+      console.log("click", "selected month", selectedMonth);
 
       displayName.innerText = months[selectedMonth];
 
@@ -153,23 +152,31 @@ function dropDown() {
 
       monthOption.classList.add("active-month");
       monthDropdown.classList.remove("active-btn");
+
+      finaceRender();
     });
 
     monthDropdown.appendChild(monthOption);
   });
 
- 
   displayName.innerText = months[selectedMonth];
 }
-
 
 selectMonths.addEventListener("click", () => {
   monthDropdown.classList.toggle("active-btn");
 });
 
+window.addEventListener("click", (e) => {
+  if (!e.target.closest(".select-month")) {
+    monthDropdown.classList.remove("active-btn");
+  }
+});
+
 dropDown();
 
 // =================== Dashboard charts ===================
+
+let userTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
 
 function getLegendPosition() {
   return window.innerWidth < 1070 ? "bottom" : "right";
@@ -186,7 +193,7 @@ const chart = new Chart(ctx, {
     datasets: [
       {
         label: "Balance",
-        data: [300, 50, 100],
+        data: [0, 0, 0],
         backgroundColor: [
           "rgb(255, 205, 86)",
           "rgb(255, 99, 132)",
@@ -224,59 +231,118 @@ window.addEventListener("resize", () => {
 // -------- Bar Chart --------
 
 const barCharts = document.querySelectorAll(".myBarChart");
+const charts = [];
 
 barCharts.forEach((canvas, index) => {
-  let labels;
-  let incomeData;
-  let expenseData;
+  // ðŸ”¥ destroy previous chart if exists
+  if (charts[index]) {
+    charts[index].destroy();
+  }
 
-  // First chart → 5 months
+  let labels, incomeData, expenseData;
+
   if (index === 0) {
     labels = ["Jan", "Feb", "Mar", "Apr", "May"];
-    incomeData = [500, 600, 550, 700, 650];
-    expenseData = [300, 400, 350, 450, 420];
-  }
-
-  // Second chart → 9 months
-  else {
+    incomeData = [0, 0, 0, 0, 0];
+    expenseData = [0, 0, 0, 0, 0];
+  } else {
     labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"];
-    incomeData = [500, 600, 550, 700, 650, 720, 680, 750, 800];
-    expenseData = [300, 400, 350, 450, 420, 460, 430, 470, 500];
+    incomeData = [0, 0, 0, 0, 0];
+    expenseData = [0, 0, 0, 0, 0];
   }
 
-  new Chart(canvas, {
+  const chart = new Chart(canvas, {
     type: "bar",
     data: {
-      labels: labels,
+      labels,
       datasets: [
-        {
-          label: "Income",
-          data: incomeData,
-          backgroundColor: "rgb(54, 162, 235)",
-        },
-        {
-          label: "Expense",
-          data: expenseData,
-          backgroundColor: "rgb(255, 99, 132)",
-        },
+        { label: "Income", data: incomeData },
+        { label: "Expense", data: expenseData },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: "bottom",
-        },
-      },
     },
   });
+
+  charts[index] = chart;
 });
 
 window.addEventListener("resize", () => {
   chart.options.plugins.legend.position = getLegendPosition();
-  chart.update();
+  charts[0].update();
+  charts[1].update();
 });
+
+const recentTrx = document.querySelector(".transactions");
+
+function recentTransactions() {
+  recentTrx.innerHTML = "";
+  userTransactions.forEach((trx, index) => {
+    const transactionItem = document.createElement("div");
+    transactionItem.classList.add("transaction-card");
+
+    const transaction = document.createElement("div");
+    transaction.classList.add("transaction");
+
+    const trxSerial = document.createElement("p");
+    trxSerial.classList.add("transaction-no");
+    trxSerial.innerText = index + 1;
+
+    const trxInfo = document.createElement("div");
+    trxInfo.classList.add("transaction-info");
+
+    const trxCat = document.createElement("p");
+    trxCat.classList.add("transaction-category");
+    trxCat.innerText = trx.trxCategory;
+
+    const trxDate = document.createElement("p");
+    trxDate.classList.add("transaction-date");
+    trxDate.innerText = trx.trxDate;
+
+    trxInfo.append(trxCat, trxDate);
+
+    const trxType = document.createElement("p");
+    trxType.classList.add("trx-type");
+    trxType.innerText = trx.trxType;
+    if (trx.trxType === "Income") {
+      trxType.classList.add("income");
+    } else {
+      trxType.classList.add("expense");
+    }
+    const trxAmount = document.createElement("p");
+    trxAmount.classList.add("transaction-amount");
+    trxAmount.innerText = trx.trxAmount;
+
+    const editBtn = document.createElement("div");
+    editBtn.classList.add("icon");
+    editBtn.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
+
+    transaction.appendChild(trxSerial);
+
+    const trxIcon = document.createElement("div");
+    trxIcon.classList.add("transaction-icon");
+    const trxImg = document.createElement("img");
+    trxImg.src = `./assets/img/categories-icon/${trx.trxCategory.toLowerCase()}.png`;
+
+    trxIcon.appendChild(trxImg);
+    transaction.appendChild(trxIcon);
+
+    transaction.appendChild(trxInfo);
+    transaction.appendChild(trxType);
+
+    transactionItem.appendChild(transaction);
+    transactionItem.append(trxAmount, editBtn);
+    recentTrx.appendChild(transactionItem);
+  });
+}
+
+function dashboardRender() {
+  recentTransactions();
+  chart.update();
+  charts.forEach((chartItem) => chartItem.update());
+}
 
 // ==================Finance Section===============
 
@@ -295,11 +361,7 @@ window.addEventListener("click", (e) => {
   }
 });
 
-let userTransactions = JSON.parse(localStorage.getItem("transactions")) || [];
-
 const today = new Date();
-
-console.log(currentMonth);
 
 const formattedDate = today.toISOString().split("T")[0];
 
@@ -311,7 +373,7 @@ function addTransaction() {
   const nameInput = document.querySelector(".trx-name");
   const amountInput = document.querySelector(".trx-amount");
 
-  const categoryInput = document.querySelector("option:checked");
+  const categoryInput = document.querySelector(".income-trx-category");
   const dateInput = document.querySelector(".trx-date");
 
   const newTransaction = {
@@ -323,9 +385,6 @@ function addTransaction() {
     trxDate: dateInput.value,
   };
   userTransactions.push(newTransaction);
-
-  console.log(newTransaction);
-  console.log(userTransactions);
 
   localStorage.setItem("transactions", JSON.stringify(userTransactions));
 
@@ -340,16 +399,93 @@ function addTransaction() {
 const addIncomebtn = document.querySelector(".add-income");
 addIncomebtn.addEventListener("click", addTransaction);
 
-const income = userTransactions.filter((trx) => trx.trxType === "Income");
-const totalIncome = income.reduce((acc, trx) => acc + Number(trx.trxAmount), 0);
+// ------------calculations---------------
 
-function monthlyTransaction() {
-  monthlyIncomeBalance.innerText = `${totalIncome}`;
+function calculator() {
+  const totalBudget = budgetTrx.reduce(
+    (acc, trx) => acc + Number(trx.trxAmount),
+    0,
+  );
+
+  const totalSavings = savingTrx.reduce(
+    (acc, trx) => acc + Number(trx.trxAmount),
+    0,
+  );
+
+  const totalMonthlySavings = savingTrx
+    .filter((trx) => {
+      const date = new Date(trx.trxDate);
+      return date.getMonth() === selectedMonth;
+    })
+    .reduce((acc, trx) => acc + Number(trx.trxAmount), 0);
+
+  const income = userTransactions.filter((trx) => trx.trxType === "Income");
+  const expense = userTransactions.filter((trx) => trx.trxType === "Expense");
+
+  const monthlyIncomeTransactions = userTransactions.filter((trx) => {
+    const date = new Date(trx.trxDate);
+    return trx.trxType === "Income" && date.getMonth() === selectedMonth;
+  });
+
+  const totalMonthlyIncome = monthlyIncomeTransactions.reduce(
+    (acc, trx) => acc + trx.trxAmount,
+    0,
+  );
+
+  charts[0].data.datasets[0].data[selectedMonth] = totalMonthlyIncome;
+  charts[1].data.datasets[0].data[selectedMonth] = totalMonthlyIncome;
+
+  const totalExpense = expense.reduce(
+    (acc, trx) => acc + Number(trx.trxAmount),
+    0,
+  );
+
+  const totalMonthlyExpense = expense
+    .filter((trx) => {
+      const date = new Date(trx.trxDate);
+      return date.getMonth() === selectedMonth;
+    })
+    .reduce((acc, trx) => acc + Number(trx.trxAmount), 0);
+
+  charts[0].data.datasets[1].data[selectedMonth] = totalMonthlyExpense;
+  charts[1].data.datasets[1].data[selectedMonth] = totalMonthlyExpense;
+
+  const totalIncome = income.reduce(
+    (acc, trx) => acc + Number(trx.trxAmount),
+    0,
+  );
+
+  const totalBalance =
+    totalMonthlyIncome - totalMonthlyExpense - totalMonthlySavings;
+
+  chart.data.datasets[0].data[0] = totalMonthlyIncome;
+  chart.data.datasets[0].data[1] = totalBalance;
+
+  budgetchart.data.datasets[0].data[0] = totalExpense;
+  budgetchart.data.datasets[0].data[1] = totalBalance;
+
+  return {
+    totalBudget,
+    totalSavings,
+    totalMonthlySavings,
+    income,
+    expense,
+    monthlyIncomeTransactions,
+    totalMonthlyIncome,
+    totalExpense,
+    totalMonthlyExpense,
+    totalIncome,
+    totalBalance,
+  };
+}
+
+function monthlyTransactionRender(stats) {
+  monthlyIncomeBalance.innerText = `${stats.totalMonthlyIncome}`;
 
   const transactionsContainer = document.querySelector(".finance-transactions");
   transactionsContainer.innerHTML = "";
 
-  income.forEach((trx, index) => {
+  stats.monthlyIncomeTransactions.forEach((trx, index) => {
     const transactionItem = document.createElement("div");
     transactionItem.classList.add("transaction-card");
 
@@ -410,7 +546,7 @@ const budgetchart = new Chart(budgetChart, {
     datasets: [
       {
         label: "Balance",
-        data: [300, 560],
+        data: [0, 0],
         backgroundColor: ["rgb(255, 99, 132)", "rgb(56, 95, 150)"],
         borderRadius: 10,
         hoverOffset: 4,
@@ -454,11 +590,6 @@ window.addEventListener("click", (e) => {
 
 const budgetTrx = JSON.parse(localStorage.getItem("budgetTransactions")) || [];
 
-const totalBudget = budgetTrx.reduce(
-  (acc, trx) => acc + Number(trx.trxAmount),
-  0,
-);
-
 function addBudget() {
   let amountInput = document.querySelector(".budget-amount").value;
   let categoryInput = document.querySelector(".budget-category").value;
@@ -477,12 +608,10 @@ function addBudget() {
   budgetTrx.push(newBudgetTrx);
   localStorage.setItem("budgetTransactions", JSON.stringify(budgetTrx));
 
-  // clear inputs
-  amountInput = "";
-  categoryInput = "";
+  document.querySelector(".budget-amount").value = "";
+  document.querySelector(".budget-category").value = "";
 
-  budgetRender();
-  budgetChartRender();
+  finaceRender();
   console.log(budgetTrx);
 }
 
@@ -532,7 +661,6 @@ const savingContainer = document.querySelector(".savings-cat-container");
 inputSavingBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   savingContainer.classList.toggle("active-btn");
-  console.log("ckl");
 });
 
 window.addEventListener("click", (e) => {
@@ -542,10 +670,7 @@ window.addEventListener("click", (e) => {
 });
 
 const savingTrx = JSON.parse(localStorage.getItem("savingTransactions")) || [];
-const totalSavings = savingTrx.reduce(
-  (acc, trx) => acc + Number(trx.trxAmount),
-  0,
-);
+
 const addSavingBtn = document.querySelector(".add-saving");
 
 function addSaving() {
@@ -566,8 +691,9 @@ function addSaving() {
   savingTrx.push(newSavingTrx);
   localStorage.setItem("savingTransactions", JSON.stringify(savingTrx));
 
-  amountInput = "";
-  categoryInput = "";
+  document.querySelector(".saving-amount").value = "";
+  document.querySelector(".saving-category").value = "";
+
   console.log(amountInput, categoryInput, savingTrx);
 
   finaceRender();
@@ -634,10 +760,13 @@ function savingsRender() {
 }
 
 function finaceRender() {
-  monthlyTransaction();
+  const stats = calculator();
+  monthlyTransactionRender(stats);
+  expenseRender(stats);
   budgetRender();
-  budgetChartRender();
+  budgetChartRender(stats);
   savingsRender();
+  dashboardRender();
 }
 
 // ----------------------------expense Section-----------------------------
@@ -661,19 +790,19 @@ window.addEventListener("click", (e) => {
 document.querySelector(".exp-trx-date").value = formattedDate;
 
 function addExpenseTrx() {
-  const nameInput = document.querySelector(".exp-trx-name").value.trim();
-  const amountInput = document.querySelector(".exp-trx-amount").value;
+  const nameInput = document.querySelector(".exp-trx-name");
+  const amountInput = document.querySelector(".exp-trx-amount");
 
-  const categoryInput = document.querySelector(".expense-category").value;
-  const dateInput = document.querySelector(".exp-trx-date").value;
+  const categoryInput = document.querySelector(".expense-category");
+  const dateInput = document.querySelector(".exp-trx-date");
 
   const newTransaction = {
     id: Date.now(),
-    trxName: nameInput,
-    trxAmount: Number(amountInput),
+    trxName: nameInput.value.trim(),
+    trxAmount: Number(amountInput.value),
     trxType: "Expense",
-    trxCategory: categoryInput,
-    trxDate: dateInput,
+    trxCategory: categoryInput.value,
+    trxDate: dateInput.value,
   };
   userTransactions.push(newTransaction);
 
@@ -688,19 +817,13 @@ function addExpenseTrx() {
   // categoryInput.value = "Salary";
   dateInput.value = formattedDate;
 
-  expenseRender();
+  finaceRender();
 }
-const expense = userTransactions.filter((trx) => trx.trxType === "Expense");
-const totalExpense = expense.reduce(
-  (acc, trx) => acc + Number(trx.trxAmount),
-  0,
-);
-
-function expenseRender() {
+function expenseRender(stats) {
   const transactionsContainer = document.querySelector(".recent-expense");
   transactionsContainer.innerHTML = "";
 
-  expense.forEach((trx) => {
+  stats.expense.forEach((trx) => {
     const categoryItem = document.createElement("div");
     categoryItem.classList.add("category-item");
 
@@ -733,24 +856,8 @@ function expenseRender() {
   });
 }
 
-expenseRender();
-
 const addExpense = document.querySelector(".add-expense");
 addExpense.addEventListener("click", addExpenseTrx);
-
-const totalBalance = totalIncome - totalExpense - totalSavings;
-
-console.log(totalBalance);
-
-console.log(budgetchart.data.datasets[0].data);
-
-// JSON.parse(totalBalance.push(budgetchart.data.datasets[0].data[0]));
-budgetchart.data.datasets[0].data[0] = [totalExpense];
-budgetchart.data.datasets[0].data[1] = [totalBalance];
-console.log(totalBalance);
-console.log(totalExpense);
-console.log(totalIncome);
-console.log(totalBudget);
 
 const monthlyBudgetBalanceCon = document.querySelector(
   ".monthly-budget-balance",
@@ -759,16 +866,22 @@ const availableBalanceCon = document.querySelector(".available-balance");
 const totalExpenseCon = document.querySelector(".expense-balance");
 const savingsbalanceCon = document.querySelector(".savings-balance");
 
-function budgetChartRender() {
-  monthlyBudgetBalanceCon.innerText = totalBudget;
-  availableBalanceCon.innerText = totalBalance;
-  totalExpenseCon.innerText = totalExpense;
-  savingsbalanceCon.innerText = totalSavings;
+function budgetChartRender(stats) {
+  monthlyBudgetBalanceCon.innerText = stats.totalBudget;
+  availableBalanceCon.innerText = stats.totalBalance;
+  totalExpenseCon.innerText = stats.totalExpense;
+  savingsbalanceCon.innerText = stats.totalSavings;
 
   budgetchart.update();
 }
 
+budgetchart.update();
+chart.update();
+
+render();
+dashboardRender();
 finaceRender();
+
 // monthlyBudgetBalanceCon.innerText = "0";
 // availableBalanceCon.innerText = "0";
 // totalExpenseCon.innerText = "0";
