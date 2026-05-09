@@ -9,8 +9,6 @@ menuButtons.forEach((btn) => {
     btn.querySelector("i").classList.add("active");
 
     const page = btn.dataset.page;
-    console.log(page);
-    console.log(btn.dataset);
 
     document.querySelectorAll("section").forEach((sec) => {
       sec.style.display = "none";

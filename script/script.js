@@ -1,93 +1,8 @@
 const greating = document.querySelector(".greating");
 const dateEl = document.querySelector(".date");
 
-const userName = document.querySelector(".user-name");
-const userLastName = document.querySelector(".user-last-name");
-const userProfession = document.querySelector(".user-profession");
-const userPhotos = document.querySelectorAll(".user-dp");
-
-const firstName = document.querySelector(".first-name");
-const lastName = document.querySelector(".last-name");
-const profession = document.querySelector(".profession");
-const startingBalance = document.querySelector(".balance");
-const inputPhoto = document.querySelector(".upload-photo");
-const signup = document.querySelector(".sign-up");
-const signIn = document.querySelector(".sign-in");
-
 const selectMonths = document.querySelector(".select-month");
 const monthDropdown = document.querySelector(".month-dropdown");
-
-const mainContainer = document.querySelector(".main-container");
-
-let userState = JSON.parse(localStorage.getItem("userData")) || {
-  firstname: "",
-  lastname: "",
-  profession: "",
-  startingBalance: "",
-  currency: "",
-  imgSrc: "",
-};
-
-console.log(userState);
-
-function render() {
-  if (
-    userState &&
-    userState.firstname &&
-    userState.lastname &&
-    userState.profession &&
-    userState.currency
-  ) {
-    console.log("All fields are filled");
-    mainContainer.style.display = "grid";
-    signup.style.display = "none"; //
-    dashboardRender();
-
-    userName.innerText = userState.firstname;
-    userLastName.innerText = userState.lastname;
-    userProfession.innerText = userState.profession;
-
-    userPhotos.forEach((userPhoto) => {
-      userPhoto.src = userState.imgSrc;
-    });
-  } else {
-    console.log("Some fields are missing");
-  }
-}
-
-// ==================signUp section============
-
-function inputsHandler(e) {
-  const name = e.target.name;
-
-  const value = e.target.value;
-
-  userState[name] = value;
-
-  userState;
-}
-
-document.querySelectorAll("input").forEach((input) => {
-  input.addEventListener("input", inputsHandler);
-});
-
-inputPhoto.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function () {
-    userState.imgSrc = reader.result;
-  };
-
-  reader.readAsDataURL(file);
-});
-
-signIn.addEventListener("click", () => {
-  localStorage.setItem("userData", JSON.stringify(userState));
-
-  userState = JSON.parse(localStorage.getItem("userData"));
-  render();
-});
 
 dateEl.innerText = new Date().toLocaleString("en-US", {
   day: "numeric",
@@ -124,6 +39,42 @@ const months = [
   "December",
 ];
 
+const shortMonths = months.map((month) => month.slice(0, 3));
+const recentChartMonthCount = 6;
+
+function groupTransactionsByMonth(transactions) {
+  return transactions.reduce((monthlyTransactions, trx) => {
+    const date = new Date(trx.trxDate);
+    const monthName = months[date.getMonth()];
+
+    if (!monthName) return monthlyTransactions;
+
+    if (!monthlyTransactions[monthName]) {
+      monthlyTransactions[monthName] = [];
+    }
+
+    monthlyTransactions[monthName].push(trx);
+    return monthlyTransactions;
+  }, {});
+}
+
+function getMonthlyTotals(transactions) {
+  return months.map((month, index) => {
+    return transactions
+      .filter((trx) => new Date(trx.trxDate).getMonth() === index)
+      .reduce((acc, trx) => acc + Number(trx.trxAmount), 0);
+  });
+}
+
+function getRecentMonthIndexes(
+  monthCount = recentChartMonthCount,
+  baseMonth = currentMonth,
+) {
+  return Array.from({ length: monthCount }, (_, index) => {
+    return (baseMonth - monthCount + 1 + index + months.length) % months.length;
+  });
+}
+
 const displayName = document.querySelector(".display-month");
 
 let selectedMonth = currentMonth;
@@ -142,7 +93,6 @@ function dropDown() {
 
     monthOption.addEventListener("click", () => {
       selectedMonth = index;
-      console.log("click", "selected month", selectedMonth);
 
       displayName.innerText = months[selectedMonth];
 
@@ -239,25 +189,19 @@ barCharts.forEach((canvas, index) => {
     charts[index].destroy();
   }
 
-  let labels, incomeData, expenseData;
-
-  if (index === 0) {
-    labels = ["Jan", "Feb", "Mar", "Apr", "May"];
-    incomeData = [0, 0, 0, 0, 0];
-    expenseData = [0, 0, 0, 0, 0];
-  } else {
-    labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"];
-    incomeData = [0, 0, 0, 0, 0];
-    expenseData = [0, 0, 0, 0, 0];
-  }
+  const labels =
+    index === 0
+      ? getRecentMonthIndexes().map((monthIndex) => shortMonths[monthIndex])
+      : shortMonths;
+  const dataLength = labels.length;
 
   const chart = new Chart(canvas, {
     type: "bar",
     data: {
       labels,
       datasets: [
-        { label: "Income", data: incomeData },
-        { label: "Expense", data: expenseData },
+        { label: "Income", data: Array(dataLength).fill(0) },
+        { label: "Expense", data: Array(dataLength).fill(0) },
       ],
     },
     options: {
@@ -313,7 +257,7 @@ function recentTransactions() {
     }
     const trxAmount = document.createElement("p");
     trxAmount.classList.add("transaction-amount");
-    trxAmount.innerText = trx.trxAmount;
+    trxAmount.innerText = formatAmount(trx.trxAmount);
 
     const editBtn = document.createElement("div");
     editBtn.classList.add("icon");
@@ -338,8 +282,23 @@ function recentTransactions() {
   });
 }
 
+function renderStaticCurrencyAmounts() {
+  const staticAmountElements = document.querySelectorAll(
+    ".amount span, .savings-amount, .savings-target",
+  );
+
+  staticAmountElements.forEach((amountEl) => {
+    if (!amountEl.dataset.amount) {
+      amountEl.dataset.amount = amountEl.innerText.replace(/[^0-9.-]/g, "");
+    }
+
+    amountEl.innerText = formatAmount(amountEl.dataset.amount);
+  });
+}
+
 function dashboardRender() {
   recentTransactions();
+  renderStaticCurrencyAmounts();
   chart.update();
   charts.forEach((chartItem) => chartItem.update());
 }
@@ -350,14 +309,49 @@ const addTrxBtn = document.querySelector(".add-trx-btn");
 const btnContent = document.querySelector(".trx-btn-content");
 const monthlyIncomeBalance = document.querySelector(".monthly-income-amount");
 
+function closeAllPopupForms() {
+  document.querySelectorAll(".trx-btn-content.active-btn").forEach((form) => {
+    form.classList.remove("active-btn");
+  });
+
+  document.body.classList.remove("popup-open");
+}
+
+function openPopupForm(form) {
+  if (!form) return;
+
+  closeAllPopupForms();
+  document.body.appendChild(form);
+  form.classList.add("active-btn");
+  document.body.classList.add("popup-open");
+}
+
+function togglePopupForm(form) {
+  if (!form) return;
+
+  if (form.classList.contains("active-btn")) {
+    closeAllPopupForms();
+  } else {
+    openPopupForm(form);
+  }
+}
+
 addTrxBtn.addEventListener("click", (e) => {
   e.stopPropagation();
-  btnContent.classList.toggle("active-btn");
+  togglePopupForm(btnContent);
+});
+
+document.querySelectorAll(".form-close").forEach((closeButton) => {
+  closeButton.addEventListener("click", closeAllPopupForms);
 });
 
 window.addEventListener("click", (e) => {
-  if (!e.target.closest(".trx-btn, .trx-btn-content")) {
-    btnContent.classList.remove("active-btn");
+  if (
+    !e.target.closest(
+      ".trx-btn-content, .add-trx-btn, .add-budget-btn, .add-saving-btn, .exp-trx-btn",
+    )
+  ) {
+    closeAllPopupForms();
   }
 });
 
@@ -370,7 +364,6 @@ document.querySelectorAll(".trx-date").forEach((dateInput) => {
 });
 
 function addTransaction() {
-  const nameInput = document.querySelector(".trx-name");
   const amountInput = document.querySelector(".trx-amount");
 
   const categoryInput = document.querySelector(".income-trx-category");
@@ -378,7 +371,6 @@ function addTransaction() {
 
   const newTransaction = {
     id: Date.now(),
-    trxName: nameInput.value.trim(),
     trxAmount: Number(amountInput.value),
     trxType: "Income",
     trxCategory: categoryInput.value,
@@ -388,12 +380,12 @@ function addTransaction() {
 
   localStorage.setItem("transactions", JSON.stringify(userTransactions));
 
-  nameInput.value = "";
   amountInput.value = "";
   categoryInput.value = "Salary";
   dateInput.value = formattedDate;
 
   finaceRender();
+  closeAllPopupForms();
 }
 
 const addIncomebtn = document.querySelector(".add-income");
@@ -402,10 +394,20 @@ addIncomebtn.addEventListener("click", addTransaction);
 // ------------calculations---------------
 
 function calculator() {
+  const startingBalanceAmount =
+    Number(String(userState.startingBalance).replace(/[^0-9.-]/g, "")) || 0;
+
   const totalBudget = budgetTrx.reduce(
     (acc, trx) => acc + Number(trx.trxAmount),
     0,
   );
+
+  const totalMonthlyBudget = budgetTrx
+    .filter((trx) => {
+      const date = new Date(trx.trxDate || formattedDate);
+      return date.getMonth() === selectedMonth;
+    })
+    .reduce((acc, trx) => acc + Number(trx.trxAmount), 0);
 
   const totalSavings = savingTrx.reduce(
     (acc, trx) => acc + Number(trx.trxAmount),
@@ -422,33 +424,52 @@ function calculator() {
   const income = userTransactions.filter((trx) => trx.trxType === "Income");
   const expense = userTransactions.filter((trx) => trx.trxType === "Expense");
 
-  const monthlyIncomeTransactions = userTransactions.filter((trx) => {
-    const date = new Date(trx.trxDate);
-    return trx.trxType === "Income" && date.getMonth() === selectedMonth;
-  });
+  const monthlyIncomeTransactions = groupTransactionsByMonth(income);
+  const selectedMonthName = months[selectedMonth];
+  const selectedMonthlyIncomeTransactions =
+    monthlyIncomeTransactions[selectedMonthName] || [];
+  const monthlyIncomeTotals = getMonthlyTotals(income);
+  const monthlyExpenseTotals = getMonthlyTotals(expense);
+  const monthlySavingsTotals = getMonthlyTotals(savingTrx);
+  const lastMonthIndex = (selectedMonth - 1 + months.length) % months.length;
+  const lastMonthBalance =
+    monthlyIncomeTotals[lastMonthIndex] -
+    monthlyExpenseTotals[lastMonthIndex] -
+    monthlySavingsTotals[lastMonthIndex];
+  const recentMonthIndexes = getRecentMonthIndexes();
+  const recentMonthLabels = recentMonthIndexes.map(
+    (monthIndex) => shortMonths[monthIndex],
+  );
+  const recentIncomeTotals = recentMonthIndexes.map(
+    (monthIndex) => monthlyIncomeTotals[monthIndex],
+  );
+  const recentExpenseTotals = recentMonthIndexes.map(
+    (monthIndex) => monthlyExpenseTotals[monthIndex],
+  );
 
-  const totalMonthlyIncome = monthlyIncomeTransactions.reduce(
-    (acc, trx) => acc + trx.trxAmount,
+  const totalMonthlyIncome = selectedMonthlyIncomeTransactions.reduce(
+    (acc, trx) => acc + Number(trx.trxAmount),
     0,
   );
 
-  charts[0].data.datasets[0].data[selectedMonth] = totalMonthlyIncome;
-  charts[1].data.datasets[0].data[selectedMonth] = totalMonthlyIncome;
+  if (charts[0]) {
+    charts[0].data.labels = recentMonthLabels;
+    charts[0].data.datasets[0].data = recentIncomeTotals;
+    charts[0].data.datasets[1].data = recentExpenseTotals;
+  }
+
+  if (charts[1]) {
+    charts[1].data.labels = shortMonths;
+    charts[1].data.datasets[0].data = monthlyIncomeTotals;
+    charts[1].data.datasets[1].data = monthlyExpenseTotals;
+  }
 
   const totalExpense = expense.reduce(
     (acc, trx) => acc + Number(trx.trxAmount),
     0,
   );
 
-  const totalMonthlyExpense = expense
-    .filter((trx) => {
-      const date = new Date(trx.trxDate);
-      return date.getMonth() === selectedMonth;
-    })
-    .reduce((acc, trx) => acc + Number(trx.trxAmount), 0);
-
-  charts[0].data.datasets[1].data[selectedMonth] = totalMonthlyExpense;
-  charts[1].data.datasets[1].data[selectedMonth] = totalMonthlyExpense;
+  const totalMonthlyExpense = monthlyExpenseTotals[selectedMonth];
 
   const totalIncome = income.reduce(
     (acc, trx) => acc + Number(trx.trxAmount),
@@ -456,36 +477,44 @@ function calculator() {
   );
 
   const totalBalance =
-    totalMonthlyIncome - totalMonthlyExpense - totalMonthlySavings;
+    startingBalanceAmount + totalIncome - totalExpense - totalSavings;
 
   chart.data.datasets[0].data[0] = totalMonthlyIncome;
   chart.data.datasets[0].data[1] = totalBalance;
+  chart.data.datasets[0].data[2] = lastMonthBalance;
 
   budgetchart.data.datasets[0].data[0] = totalExpense;
   budgetchart.data.datasets[0].data[1] = totalBalance;
 
   return {
     totalBudget,
+    totalMonthlyBudget,
     totalSavings,
     totalMonthlySavings,
     income,
     expense,
     monthlyIncomeTransactions,
+    selectedMonthlyIncomeTransactions,
+    monthlyIncomeTotals,
+    monthlyExpenseTotals,
+    monthlySavingsTotals,
+    lastMonthBalance,
     totalMonthlyIncome,
     totalExpense,
     totalMonthlyExpense,
     totalIncome,
+    startingBalanceAmount,
     totalBalance,
   };
 }
 
 function monthlyTransactionRender(stats) {
-  monthlyIncomeBalance.innerText = `${stats.totalMonthlyIncome}`;
+  monthlyIncomeBalance.innerText = formatAmount(stats.totalMonthlyIncome);
 
   const transactionsContainer = document.querySelector(".finance-transactions");
   transactionsContainer.innerHTML = "";
 
-  stats.monthlyIncomeTransactions.forEach((trx, index) => {
+  stats.selectedMonthlyIncomeTransactions.forEach((trx, index) => {
     const transactionItem = document.createElement("div");
     transactionItem.classList.add("transaction-card");
 
@@ -519,7 +548,7 @@ function monthlyTransactionRender(stats) {
 
     const trxAmount = document.createElement("p");
     trxAmount.classList.add("transaction-amount");
-    trxAmount.innerText = trx.trxAmount;
+    trxAmount.innerText = formatAmount(trx.trxAmount);
 
     const editBtn = document.createElement("div");
     editBtn.classList.add("icon");
@@ -532,8 +561,6 @@ function monthlyTransactionRender(stats) {
     transactionsContainer.appendChild(transactionItem);
   });
 }
-
-console.log(userTransactions);
 
 // -------- Chart --------
 
@@ -579,13 +606,7 @@ const budgetContent = document.querySelector(".budget-cat-content");
 
 inputBudgetBtn.addEventListener("click", (e) => {
   e.stopPropagation();
-  budgetContent.classList.toggle("active-btn");
-});
-
-window.addEventListener("click", (e) => {
-  if (!e.target.closest(".add-budget-btn, .budget-cat-content")) {
-    budgetContent.classList.remove("active-btn");
-  }
+  togglePopupForm(budgetContent);
 });
 
 const budgetTrx = JSON.parse(localStorage.getItem("budgetTransactions")) || [];
@@ -603,6 +624,7 @@ function addBudget() {
     id: Date.now(),
     trxAmount: amountInput,
     trxCategory: categoryInput,
+    trxDate: formattedDate,
   };
 
   budgetTrx.push(newBudgetTrx);
@@ -612,7 +634,7 @@ function addBudget() {
   document.querySelector(".budget-category").value = "";
 
   finaceRender();
-  console.log(budgetTrx);
+  closeAllPopupForms();
 }
 
 const addBudgetbtn = document.querySelector(".add-budget");
@@ -641,7 +663,7 @@ function budgetRender() {
 
     const catAmount = document.createElement("span");
     catAmount.classList.add("budget-money");
-    catAmount.innerText = `$${budgetTrx.trxAmount}`;
+    catAmount.innerText = formatAmount(budgetTrx.trxAmount);
 
     const editBtn = document.createElement("div");
     editBtn.classList.add("edit");
@@ -660,13 +682,7 @@ const savingContainer = document.querySelector(".savings-cat-container");
 
 inputSavingBtn.addEventListener("click", (e) => {
   e.stopPropagation();
-  savingContainer.classList.toggle("active-btn");
-});
-
-window.addEventListener("click", (e) => {
-  if (!e.target.closest(".add-saving-btn, .savings-cat-container")) {
-    savingContainer.classList.remove("active-btn");
-  }
+  togglePopupForm(savingContainer);
 });
 
 const savingTrx = JSON.parse(localStorage.getItem("savingTransactions")) || [];
@@ -692,11 +708,10 @@ function addSaving() {
   localStorage.setItem("savingTransactions", JSON.stringify(savingTrx));
 
   document.querySelector(".saving-amount").value = "";
-  document.querySelector(".saving-category").value = "";
-
-  console.log(amountInput, categoryInput, savingTrx);
+  document.querySelector(".saving-category").value = "Emergency";
 
   finaceRender();
+  closeAllPopupForms();
 }
 
 addSavingBtn.addEventListener("click", addSaving);
@@ -733,7 +748,7 @@ function savingsRender() {
 
       const trxAmount = document.createElement("p");
       trxAmount.classList.add("transaction-amount");
-      trxAmount.innerText = savingTrx.trxAmount;
+      trxAmount.innerText = formatAmount(savingTrx.trxAmount);
 
       const editBtn = document.createElement("div");
       editBtn.classList.add("icon");
@@ -776,21 +791,12 @@ const expBtnContent = document.querySelector(".exp-content");
 
 expTrxBtn.addEventListener("click", (e) => {
   e.stopPropagation();
-  expBtnContent.classList.toggle("active-btn");
-
-  console.log("click");
-});
-
-window.addEventListener("click", (e) => {
-  if (!e.target.closest(".exp-trx-btn, .exp-content")) {
-    expBtnContent.classList.remove("active-btn");
-  }
+  togglePopupForm(expBtnContent);
 });
 
 document.querySelector(".exp-trx-date").value = formattedDate;
 
 function addExpenseTrx() {
-  const nameInput = document.querySelector(".exp-trx-name");
   const amountInput = document.querySelector(".exp-trx-amount");
 
   const categoryInput = document.querySelector(".expense-category");
@@ -798,7 +804,6 @@ function addExpenseTrx() {
 
   const newTransaction = {
     id: Date.now(),
-    trxName: nameInput.value.trim(),
     trxAmount: Number(amountInput.value),
     trxType: "Expense",
     trxCategory: categoryInput.value,
@@ -806,18 +811,14 @@ function addExpenseTrx() {
   };
   userTransactions.push(newTransaction);
 
-  console.log(newTransaction);
-  console.log(userTransactions);
-
   localStorage.setItem("transactions", JSON.stringify(userTransactions));
 
-  nameInput.value = "";
   amountInput.value = "";
-  categoryInput.value = "";
-  // categoryInput.value = "Salary";
+  categoryInput.value = "Salary";
   dateInput.value = formattedDate;
 
   finaceRender();
+  closeAllPopupForms();
 }
 function expenseRender(stats) {
   const transactionsContainer = document.querySelector(".recent-expense");
@@ -843,7 +844,7 @@ function expenseRender(stats) {
 
     const catAmount = document.createElement("span");
     catAmount.classList.add("budget-money");
-    catAmount.innerText = `$${trx.trxAmount}`;
+    catAmount.innerText = formatAmount(trx.trxAmount);
 
     const editBtn = document.createElement("div");
     editBtn.classList.add("edit");
@@ -867,10 +868,10 @@ const totalExpenseCon = document.querySelector(".expense-balance");
 const savingsbalanceCon = document.querySelector(".savings-balance");
 
 function budgetChartRender(stats) {
-  monthlyBudgetBalanceCon.innerText = stats.totalBudget;
-  availableBalanceCon.innerText = stats.totalBalance;
-  totalExpenseCon.innerText = stats.totalExpense;
-  savingsbalanceCon.innerText = stats.totalSavings;
+  monthlyBudgetBalanceCon.innerText = formatAmount(stats.totalMonthlyBudget);
+  availableBalanceCon.innerText = formatAmount(stats.totalBalance);
+  totalExpenseCon.innerText = formatAmount(stats.totalExpense);
+  savingsbalanceCon.innerText = formatAmount(stats.totalSavings);
 
   budgetchart.update();
 }

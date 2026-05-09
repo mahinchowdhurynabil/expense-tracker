@@ -7,10 +7,30 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     />
-    <!-- <script src="./script/sign-up.js"></script> -->
-    <script src="script.js" defer></script>
+    <script src="./script/signin.js" defer></script>
+    <script src="./script/script.js" defer></script>
     <script src="./script/side-menu.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      (() => {
+        let savedUser = {};
+
+        try {
+          savedUser = JSON.parse(localStorage.getItem("userData") || "{}");
+        } catch {
+          savedUser = {};
+        }
+
+        if (
+          savedUser.firstname &&
+          savedUser.lastname &&
+          savedUser.profession &&
+          savedUser.currency
+        ) {
+          document.documentElement.classList.add("signed-in");
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="style.css" />
     <title>Expense Tracker</title>
   </head>
@@ -312,29 +332,44 @@
             <button class="text-btn add-trx-btn">+ Add Income</button>
 
             <div class="trx-btn-content">
-              <input
-                type="number"
-                class="trx-amount"
-                placeholder="transaction amount"
-              />
+              <div class="form-header">
+                <h5 class="form-title">Add your Income</h5>
+                <button
+                  class="form-close"
+                  type="button"
+                  aria-label="Close form"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
 
-              <select class="income-trx-category" id="">
-                <option value="Salary">Salary</option>
-                <option value="Freelance">Freelance</option>
-                <option value="Gift">Gift</option>
-                <option value="Business">Business</option>
-              </select>
+              <label class="form-field">
+                <span>Amount</span>
+                <input
+                  type="number"
+                  class="trx-amount"
+                  placeholder="transaction amount"
+                />
+              </label>
 
-              <input
-                type="text"
-                class="trx-name"
-                placeholder="transaction name"
-              />
-              <input
-                type="date"
-                class="trx-date"
-                placeholder="transaction date"
-              />
+              <label class="form-field">
+                <span>Category</span>
+                <select class="income-trx-category" id="">
+                  <option value="Salary">💼 Salary</option>
+                  <option value="Freelance">🧑‍💻 Freelance</option>
+                  <option value="Gift">🎁 Gift</option>
+                  <option value="Business">🏢 Business</option>
+                </select>
+              </label>
+
+              <label class="form-field">
+                <span>Date</span>
+                <input
+                  type="date"
+                  class="trx-date"
+                  placeholder="transaction date"
+                />
+              </label>
 
               <button type="submit" class="text-btn add-income">Add</button>
             </div>
@@ -408,22 +443,39 @@
                 </div>
 
                 <div class="trx-btn-content budget-cat-content">
-                  <input
-                    type="number"
-                    class="budget-amount"
-                    placeholder="Budget Amount"
-                  />
-                  <select class="budget-category">
-                    <option value="Food">Food</option>
-                    <option value="Transport">Transport</option>
-                    <option value="Bills">Bills</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Shopping">Shopping</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Health">Health</option>
-                    <option value="Education">Education</option>
-                    <option value="Others">Others</option>
-                  </select>
+                  <div class="form-header">
+                    <h5 class="form-title">Add your Budget</h5>
+                    <button
+                      class="form-close"
+                      type="button"
+                      aria-label="Close form"
+                    >
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+
+                  <label class="form-field">
+                    <span>Amount</span>
+                    <input
+                      type="number"
+                      class="budget-amount"
+                      placeholder="Budget Amount"
+                    />
+                  </label>
+                  <label class="form-field">
+                    <span>Category</span>
+                    <select class="budget-category">
+                      <option value="Food">🍔 Food</option>
+                      <option value="Transport">🚌 Transport</option>
+                      <option value="Bills">🧾 Bills</option>
+                      <option value="Rent">🏠 Rent</option>
+                      <option value="Shopping">🛍️ Shopping</option>
+                      <option value="Entertainment">🎬 Entertainment</option>
+                      <option value="Health">❤️ Health</option>
+                      <option value="Education">📚 Education</option>
+                      <option value="Others">✨ Others</option>
+                    </select>
+                  </label>
 
                   <button class="add-budget text-btn">Add</button>
                 </div>
@@ -453,27 +505,48 @@
               <h4>Savings Budget</h4>
 
               <div class="btn-content">
-                <div class="icon add-saving-btn">
+                <button
+                  class="icon add-saving-btn"
+                  type="button"
+                  aria-label="Add savings"
+                >
                   <i class="fa-solid fa-plus"></i>
-                </div>
+                </button>
 
                 <div class="trx-btn-content savings-cat-container">
-                  <input
-                    type="number"
-                    class="saving-amount"
-                    placeholder="Saving Amount"
-                  />
-                  <select class="saving-category">
-                    <option value="Emergency">🚨 Emergency</option>
-                    <option value="Investment">💰 Investment</option>
-                    <option value="Travel">✈️ Travel</option>
-                    <option value="Education">📚 Education</option>
-                    <option value="Gadgets">📱 Gadgets</option>
-                    <option value="Health">❤️ Health</option>
-                    <option value="Family">👨‍👩‍👧 Family</option>
-                    <option value="Lifestyle">🌿 Lifestyle</option>
-                    <option value="Others">✨ Others</option>
-                  </select>
+                  <div class="form-header">
+                    <h5 class="form-title">Add your Savings</h5>
+                    <button
+                      class="form-close"
+                      type="button"
+                      aria-label="Close form"
+                    >
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+
+                  <label class="form-field">
+                    <span>Amount</span>
+                    <input
+                      type="number"
+                      class="saving-amount"
+                      placeholder="Saving Amount"
+                    />
+                  </label>
+                  <label class="form-field">
+                    <span>Category</span>
+                    <select class="saving-category">
+                      <option value="Emergency">🚨 Emergency</option>
+                      <option value="Investment">💰 Investment</option>
+                      <option value="Travel">✈️ Travel</option>
+                      <option value="Education">📚 Education</option>
+                      <option value="Gadgets">📱 Gadgets</option>
+                      <option value="Health">❤️ Health</option>
+                      <option value="Family">👨‍👩‍👧 Family</option>
+                      <option value="Lifestyle">🌿 Lifestyle</option>
+                      <option value="Others">✨ Others</option>
+                    </select>
+                  </label>
 
                   <button class="add-saving text-btn">Add</button>
                 </div>
@@ -513,32 +586,47 @@
             <button class="text-btn exp-trx-btn">+ Add Expense</button>
 
             <div class="trx-btn-content exp-content">
-              <input
-                type="number"
-                class="exp-trx-amount"
-                placeholder="transaction amount"
-              />
+              <div class="form-header">
+                <h5 class="form-title">Add your Expense</h5>
+                <button
+                  class="form-close"
+                  type="button"
+                  aria-label="Close form"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
 
-              <select class="expense-category">
-                <option value="food">Food</option>
-                <option value="transport">Transport</option>
-                <option value="bills">Bills</option>
-                <option value="shopping">Shopping</option>
-                <option value="health">Health</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="others">Others</option>
-              </select>
+              <label class="form-field">
+                <span>Amount</span>
+                <input
+                  type="number"
+                  class="exp-trx-amount"
+                  placeholder="transaction amount"
+                />
+              </label>
 
-              <input
-                type="text"
-                class="exp-trx-name"
-                placeholder="transaction name"
-              />
-              <input
-                type="date"
-                class="exp-trx-date"
-                placeholder="transaction date"
-              />
+              <label class="form-field">
+                <span>Category</span>
+                <select class="expense-category">
+                  <option value="food">🍔 Food</option>
+                  <option value="transport">🚌 Transport</option>
+                  <option value="bills">🧾 Bills</option>
+                  <option value="shopping">🛍️ Shopping</option>
+                  <option value="health">❤️ Health</option>
+                  <option value="entertainment">🎬 Entertainment</option>
+                  <option value="others">✨ Others</option>
+                </select>
+              </label>
+
+              <label class="form-field">
+                <span>Date</span>
+                <input
+                  type="date"
+                  class="exp-trx-date"
+                  placeholder="transaction date"
+                />
+              </label>
 
               <button type="submit" class="text-btn add-expense">Add</button>
             </div>
@@ -634,6 +722,57 @@
       <section class="settings">
         <div class="title-section">
           <h4>Settings</h4>
+        </div>
+
+        <div class="settings-content">
+          <div class="profile-card grid-container">
+            <div class="profile-photo-box">
+              <img src="" class="settings-photo user-dp" alt="" />
+              <label class="photo-change-btn">
+                <i class="fa-solid fa-camera"></i>
+                Change Photo
+                <input type="file" class="settings-photo-input" />
+              </label>
+            </div>
+
+            <div class="profile-form">
+              <label class="settings-field">
+                <span>First Name</span>
+                <input type="text" class="settings-first-name" />
+              </label>
+
+              <label class="settings-field">
+                <span>Last Name</span>
+                <input type="text" class="settings-last-name" />
+              </label>
+
+              <label class="settings-field">
+                <span>Profession</span>
+                <input type="text" class="settings-profession" />
+              </label>
+
+              <label class="settings-field">
+                <span>Starting Balance</span>
+                <input type="number" class="settings-balance" />
+              </label>
+
+              <label class="settings-field">
+                <span>Currency</span>
+                <input
+                  list="currencies"
+                  class="settings-currency"
+                  placeholder="Choose a currency"
+                />
+              </label>
+
+              <div class="settings-actions">
+                <button class="text-btn save-profile" type="button">
+                  Save Changes
+                </button>
+                <button class="logout-btn" type="button">Logout</button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>

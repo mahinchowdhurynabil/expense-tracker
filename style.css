@@ -535,6 +535,7 @@ button {
     display: flex;
     gap: 8px;
     background-color: var(--primary-text-color);
+    border: none;
     padding: 8px;
     border-radius: 50%;
     cursor: pointer;
@@ -549,7 +550,7 @@ button {
   .finance-card {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     gap: 1rem;
     padding: 16px;
     align-items: center;
@@ -560,7 +561,6 @@ button {
     }
 
     @media (max-width: 768px) {
-      justify-content: space-between;
       gap: 0;
     }
   }
@@ -577,9 +577,12 @@ button {
   }
 
   .balance-title {
-    font-size: 14px;
+    font-size: clamp(11px, 3vw, 14px);
     color: var(--secondary-text-color);
     padding-block-end: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .chart-container {
@@ -685,6 +688,8 @@ button {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    padding-inline: 16px;
+    padding-block-end: 16px;
   }
   .savings-card {
     display: flex;
@@ -816,17 +821,80 @@ button {
     display: none;
     flex-direction: column;
     gap: 14px;
-    position: absolute;
-    top: 62px;
-    right: 16px;
-    background-color: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(10px);
-    /* background-color: rgba(255, 255, 255, 0.7); */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    border-radius: 15px;
-    transition: content 300ms ease-in-out;
-    z-index: 1000;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: min(360px, calc(100vw - 32px));
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(18px);
+    box-shadow: 0px 24px 70px rgba(30, 41, 59, 0.24);
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 18px;
+    transform: translate(-50%, -50%);
+    z-index: 10001;
+  }
+
+  .trx-btn-content.active-btn {
+    z-index: 200000;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 220px;
+  }
+
+  .form-title {
+    color: var(--primary-text-color);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .form-close {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--icon-bg-color);
+    color: var(--primary-text-color);
+    font-size: 16px;
+  }
+
+  .form-field span {
+    color: var(--primary-text-color);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .form-field input,
+  .form-field select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background-color: var(--icon-bg-color);
+    color: var(--primary-text-color);
+    font-family: inherit;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus {
+    border-color: var(--btn-blue);
+    outline: none;
   }
 
   .finance-transactions {
@@ -853,9 +921,7 @@ button {
   }
 
   .btn-content > .trx-btn-content {
-    top: 45px;
-    right: 4px;
-    background-color: var(--container--bg-color);
+    background-color: rgba(255, 255, 255, 0.92);
   }
   .monthly-income {
     height: 350px;
@@ -892,18 +958,30 @@ button {
 
   .budget > .balance-box {
     display: grid;
-    grid-template-columns: repeat(2, minmax(120px, 350px));
+    grid-template-columns: repeat(2, minmax(240px, 350px));
     grid-template-rows: auto;
     gap: 1rem;
-    justify-items: center;
+    justify-items: stretch;
     @media (max-width: 768px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       border: none;
       padding: 0;
     }
-  }
 
+    @media (max-width: 470px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-block-end: 16px;
+    }
+  }
+  .budget-progress {
+    padding-inline: 16px;
+    padding-block-end: 16px;
+  }
   .budget .balance {
-    padding: 24px;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 14px;
     background-color: var(--container--bg-color);
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
@@ -911,6 +989,11 @@ button {
     @media (max-width: 470px) {
       padding: 14px;
     }
+  }
+
+  .budget .balance > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   .budget-categories > .title-section {
     display: flex;
@@ -1114,6 +1197,27 @@ button {
   display: none;
 }
 
+html.signed-in .sign-up {
+  display: none;
+}
+
+html.signed-in .main-container {
+  display: grid;
+}
+
+body.popup-open {
+  overflow: hidden;
+}
+
+body.popup-open::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.28);
+  backdrop-filter: blur(8px);
+  z-index: 190000;
+}
+
 .active-btn {
   display: flex;
   flex-direction: column;
@@ -1124,7 +1228,8 @@ button {
   color: var(--container--bg-color);
 }
 
-.active-btn > input {
+.active-btn .form-field input,
+.active-btn .form-field select {
   border: 1px solid var(--container--bg-color);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
@@ -1139,4 +1244,121 @@ button {
 
 .expense-container {
   display: none;
+}
+
+.settings {
+  display: none;
+  padding: 16px;
+}
+
+.settings-content {
+  max-width: 900px;
+}
+
+.profile-card {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+.profile-photo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.settings-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--icon-bg-color);
+}
+
+.photo-change-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 50px;
+  background-color: var(--primary-text-color);
+  color: var(--icon-bg-color);
+  cursor: pointer;
+}
+
+.photo-change-btn input {
+  display: none;
+}
+
+.profile-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-field span {
+  color: var(--secondary-text-color);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.settings-field input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background-color: var(--icon-bg-color);
+  font-family: inherit;
+}
+
+.settings-field input:focus {
+  outline: 1px solid var(--btn-blue);
+}
+
+.settings-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  grid-column: 1 / -1;
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  border: 1px solid rgb(255, 99, 132);
+  border-radius: 50px;
+  background-color: transparent;
+  color: rgb(255, 99, 132);
+  font-family: inherit;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .settings {
+    padding: 0;
+    padding-block-end: 120px;
+  }
+
+  .profile-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .profile-form {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
